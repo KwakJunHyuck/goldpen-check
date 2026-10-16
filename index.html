@@ -210,7 +210,7 @@
 
   <details class="rules">
     <summary>어떤 기준으로 비교하나요</summary>
-    <p>발주서의 <b>수령자명</b>과 골드펜의 <b>실고객명</b>으로 사람을 맞춘 뒤, 주문선택사항을 남자/여자 조각으로 나눠 골드펜 행과 짝을 짓습니다(모델번호의 남/여·대/소·RL/RS와 사이즈로 판단). 각 짝에서 <b>사이즈</b>(17.5호 ↔ 17.5), <b>재질</b>(14K/18K, SILVER ↔ SV925), <b>색상</b>(화이트→WG·무도금W, 옐로우→YG, 로즈→PG, 화이트&amp;로즈→W/P, 리얼실버→빈칸)이 다르면 <b>불일치</b>, 스톤 옵션(1부/2부/3부 랩, SV 랩)·도금 여부·유광 표기가 기타설명에 없으면 <b>확인</b>으로 표시합니다. 판매가 0원인 "추가 옵션 선택" 행은 같은 고객의 스톤 옵션으로 합쳐지고, 주문선택사항이 없는 상품(사이즈 측정기 등)은 비교에서 제외합니다. 팔찌는 길이 숫자가 사이즈·기타설명에 있는지 확인합니다.</p>
+    <p>발주서의 <b>수령자명</b>과 골드펜의 <b>실고객명</b>으로 사람을 맞춘 뒤, 주문선택사항을 남자/여자 조각으로 나눠 골드펜 행과 짝을 짓습니다(모델번호의 남/여·대/소·RL/RS와 사이즈로 판단). 각 짝에서 <b>사이즈</b>(17.5호 ↔ 17.5), <b>재질</b>(14K/18K, SILVER ↔ SV925), <b>색상</b>(화이트→WG·무도금W, 옐로우→YG, 로즈→PG, 화이트&amp;로즈→W/P, 리얼실버→빈칸)이 다르면 <b>불일치</b>로 표시합니다. 스톤은 <b>천연 ↔ 랩그로운</b>이 뒤바뀌면 값 차이가 크므로 <b>불일치</b>(기타설명의 "천연"·"현대"·"GIA"를 천연, "랩"을 랩으로 읽습니다. 남자만 천연, 여자는 랩처럼 성별이 다른 경우도 각각 따로 봅니다), 부수(1부/2부/3부)나 SV 랩·도금 여부·유광 표기가 기타설명에 없으면 <b>확인</b>으로 표시합니다. 판매가 0원인 "추가 옵션 선택" 행은 같은 고객의 스톤 옵션으로 합쳐지고, 주문선택사항이 없는 상품(사이즈 측정기 등)은 비교에서 제외합니다. 팔찌는 길이 숫자가 사이즈·기타설명에 있는지 확인합니다.</p>
   </details>
 
   <p class="foot">발주서 형식 대신 골드펜 형식 파일 두 개를 올리면 접수번호 기준 셀 단위 비교로 자동 전환됩니다.</p>
@@ -344,15 +344,29 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     const s=String(str||'').trim(); if(!s||s.toLowerCase()==='nan') return [];
     return s.split(/,\s*(?=[^:,]{1,40}\s*:\s)/).map(p=>{const i=p.indexOf(':'); if(i<0) return null; return {k:p.slice(0,i).trim(),v:p.slice(i+1).trim()};}).filter(Boolean);
   }
-  // stone selection → expected tokens in 기타설명
+  // stone selection → expected tokens in 기타설명, plus the stone TYPE (천연 vs 랩)
   function stoneTokens(v){
     const t=String(v||'');
-    if(!t||/선택\s*안함|큐빅|기본\s*세팅|기본\s*셋팅/.test(t)&&!/랩/.test(t)) return [];
+    if(!t||/선택\s*안함|큐빅|기본\s*세팅|기본\s*셋팅/.test(t)&&!/랩|천연/.test(t)) return [];
     const out=[];
     const m=t.match(/(\d)\s*부/); if(m) out.push(m[1]+'부');
     if(/SV\s*랩|sv\s*랩|SV\s*다이아|보조.*랩/i.test(t)) out.push('SV랩');
     if(!out.length&&/랩\s*다이아|랩다이아/.test(t)) out.push('랩');
     return out;
+  }
+  // 천연(내추럴) 다이아인지, 랩그로운인지 — 가격이 크게 달라 반드시 따로 본다
+  function stoneType(v){
+    const t=String(v||'');
+    if(/천연|내추럴|내츄럴|natural/i.test(t)) return '천연';
+    if(/랩\s*다이아|랩다이아|랩그로운|lab/i.test(t)) return '랩';
+    return null;
+  }
+  // 골드펜 기타설명에 그 종류가 적혀 있는지 (현대·GIA 등 감정서명은 천연 표기로 본다)
+  function typeInEtc(type,etc){
+    const t=String(etc||'');
+    if(type==='천연') return /천연|현대|지아|GIA/i.test(t);
+    if(type==='랩') return /랩/.test(t);
+    return true;
   }
 
   // ---------- EMP → expected pieces per customer
@@ -370,7 +384,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       // stones & finish are collected regardless of row type
       opts.forEach(o=>{
         const g=genderOfKey(o.k);
-        if(/스톤/.test(o.k)){ const toks=stoneTokens(o.v); if(toks.length){ const both=/1\s*\+\s*1/.test(o.v); c.stones[g].push({toks,raw:o.v,both,prod}); } }
+        if(/스톤/.test(o.k)){ const toks=stoneTokens(o.v), type=stoneType(o.v); if(toks.length||type){ const both=/1\s*\+\s*1/.test(o.v); c.stones[g].push({toks,type,raw:o.v,both,prod}); } }
         if(/광\s*선택|광택/.test(o.k)&&/유광|무광/.test(o.v)){ c.finish[g]=(o.v.match(/유광|무광/)||[])[0]; }
       });
       if(isAddon){ c.items.push({prod,addon:true,row:r}); return; }
@@ -441,6 +455,15 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     wanted.forEach(t=>{
       const ok= t==='SV랩'? /sv랩|sv\s*랩|sv다이아/.test(etc.replace(/\s/g,'')) : t==='랩'? /랩/.test(etc) : etc.includes(compact(t));
       if(!ok) issues.push({level:'warn',k:'스톤',from:stones.filter(s=>s.toks.includes(t)).map(s=>s.raw).join(' / '),to:r['기타설명']||'(빈칸)',note:'"'+t+'" 표기가 기타설명에 없음'});
+    });
+    // 천연 ↔ 랩그로운: 값이 크게 달라 불일치(빨강)로 본다
+    const types=new Set(stones.map(s=>s.type).filter(Boolean));
+    types.forEach(ty=>{
+      if(typeInEtc(ty,r['기타설명'])) return;
+      const other= ty==='천연'?'랩':'천연';
+      const wrong= typeInEtc(other,r['기타설명']);
+      issues.push({level:'err',k:'스톤종류',from:stones.filter(s=>s.type===ty).map(s=>s.raw).join(' / '),to:r['기타설명']||'(빈칸)',
+        note: wrong? `발주는 ${ty}다이아인데 골드펜은 ${other}으로 입력됨` : `기타설명에 "${ty}" 표기가 없음`});
     });
     if(stones.length===0&&/(\d)부\s*랩|sv\s*랩/i.test(r['기타설명']||'')&&!(c.stones['남'].length||c.stones['여'].length||c.stones['공용'].length)) issues.push({level:'warn',k:'스톤',from:'(발주에 스톤 옵션 없음)',to:r['기타설명'],note:'발주서에는 없는 랩다이아 표기가 있음'});
     const fin=c.finish[p.gender]||c.finish['공용'];
