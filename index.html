@@ -80,13 +80,63 @@
   .tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
   @media (max-width:900px){.tiles{grid-template-columns:repeat(3,1fr)}}
   @media (max-width:520px){.tiles{grid-template-columns:repeat(2,1fr)}}
-  .tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;border-top:3px solid var(--c,var(--line));cursor:pointer;user-select:none;transition:box-shadow .12s,transform .12s;position:relative}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;border-top:3px solid var(--c,var(--line));cursor:pointer;user-select:none;transition:box-shadow .12s;position:relative}
   .tile:hover{box-shadow:0 2px 8px rgba(20,30,40,.10)}
   .tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .tile.active{box-shadow:0 0 0 2px var(--c,var(--accent)) inset;background:color-mix(in srgb,var(--c,var(--accent)) 8%,var(--panel))}
   .tile.active::after{content:'필터 중';position:absolute;top:8px;right:10px;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--c);opacity:.9}
+  .tile .n{font-size:26px;font-weight:700;line-height:1.1;color:var(--c,var(--ink))}
+  .tile .t{font-size:12px;color:var(--ink-2)}
+  .tile.ok{--c:var(--ok)} .tile.err{--c:var(--err)} .tile.warn{--c:var(--warn)} .tile.miss{--c:var(--err)} .tile.extra{--c:var(--extra)} .tile.skip{--c:var(--skip)}
   .filterbar{display:inline-flex;align-items:center;gap:8px}
   .filterbar .btn{padding:2px 9px;font-size:12px}
+  .results{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+  .results .bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--ink-2);font-size:13px}
+  .results .bar label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+  .tablewrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-weight:500;color:var(--ink-3);font-size:12px;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--panel);position:sticky;top:0}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  tr.cust-first td{border-top:2px solid var(--line-strong)}
+  tr.acked{opacity:.5}
+  td.who{font-weight:700;white-space:nowrap}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--pc);background:var(--pb)}
+  .pill.ok{--pc:var(--ok);--pb:var(--ok-soft)} .pill.warn{--pc:var(--warn);--pb:var(--warn-soft)} .pill.err,.pill.miss{--pc:var(--err);--pb:var(--err-soft)} .pill.extra{--pc:var(--extra);--pb:var(--extra-soft)} .pill.skip{--pc:var(--skip);--pb:var(--skip-soft)}
+  .g{display:inline-block;min-width:22px;text-align:center;font-weight:700;border-radius:5px;padding:0 5px;background:var(--skip-soft);color:var(--ink-2);font-size:12px}
+  .spec{display:flex;flex-wrap:wrap;gap:4px 8px;color:var(--ink-2)}
+  .spec b{color:var(--ink);font-weight:500}
+  .spec .dim{color:var(--ink-3)}
+  .issues{display:flex;flex-direction:column;gap:4px}
+  .iss{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .iss .k{font-weight:700;min-width:52px}
+  .iss.err .k{color:var(--err)} .iss.warn .k{color:var(--warn)}
+  .iss .v{padding:1px 7px;border-radius:5px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans KR",monospace;font-size:12.5px;white-space:pre-wrap}
+  .iss .v.old{background:var(--old)} .iss .v.new{background:var(--new)}
+  .iss .arrow{color:var(--ink-3)}
+  .iss .note{color:var(--ink-3);font-size:12px}
+  .iss .fix{border:1px solid var(--line-strong);background:var(--panel);color:var(--ink-2);border-radius:999px;padding:0 8px;font:inherit;font-size:11.5px;cursor:pointer}
+  .iss .fix:hover{border-color:var(--accent);color:var(--accent)}
+  .cov{display:flex;flex-wrap:wrap;gap:4px}
+  .cov span{font-size:11.5px;padding:1px 7px;border-radius:999px;background:var(--ok-soft);color:var(--ok);white-space:nowrap}
+  .cov span.na{background:var(--skip-soft);color:var(--ink-3)}
+  .ackbox{display:inline-flex;align-items:center;gap:5px;margin-top:6px;color:var(--ink-3);font-size:12px;cursor:pointer}
+  .ackbox input{accent-color:var(--accent)}
+  .empty{padding:36px 16px;text-align:center;color:var(--ink-3)}
+  .foot{color:var(--ink-3);font-size:12px;line-height:1.7}
+  .msg{color:var(--err);font-size:13px}
+  details.rules,details.vocab{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px;color:var(--ink-2);font-size:13px;box-shadow:var(--shadow)}
+  details.rules summary,details.vocab summary{cursor:pointer;font-weight:500;color:var(--ink)}
+  details.rules p{margin:8px 0 0}
+  .vocab .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:760px){.vocab .grid{grid-template-columns:1fr}}
+  .vocab .f{display:flex;flex-direction:column;gap:4px}
+  .vocab .f label{font-weight:700;color:var(--ink);font-size:12.5px}
+  .vocab .f .hint{color:var(--ink-3);font-size:11.5px}
+  .vocab textarea{width:100%;min-height:62px;resize:vertical;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:7px;padding:7px 9px;font:inherit;font-size:12.5px;line-height:1.5}
+  .vocab textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .vocab .actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+  .vocab .saved{color:var(--ok);font-size:12px}
   .log{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
   .log .head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 16px;border-bottom:1px solid var(--line)}
   .log .head h2{margin:0;font-size:15px;font-weight:700}
@@ -104,47 +154,13 @@
   .log .detail{padding:4px 16px 14px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans KR",monospace;font-size:12.5px;white-space:pre-wrap;color:var(--ink-2);border-top:1px dashed var(--line);background:var(--bg)}
   .log .empty{padding:22px 16px}
   @media (max-width:640px){.log .row{grid-template-columns:1fr auto}.log .files{grid-column:1/-1}.log .sum{justify-content:flex-start}}
-  .tile .n{font-size:26px;font-weight:700;line-height:1.1;color:var(--c,var(--ink))}
-  .tile .t{font-size:12px;color:var(--ink-2)}
-  .tile.ok{--c:var(--ok)} .tile.err{--c:var(--err)} .tile.warn{--c:var(--warn)} .tile.miss{--c:var(--err)} .tile.extra{--c:var(--extra)} .tile.skip{--c:var(--skip)}
-  .results{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
-  .results .bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--ink-2);font-size:13px}
-  .results .bar label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-  .tablewrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{text-align:left;font-weight:500;color:var(--ink-3);font-size:12px;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--panel);position:sticky;top:0}
-  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-  tr:last-child td{border-bottom:0}
-  tr.cust-first td{border-top:2px solid var(--line-strong)}
-  td.who{font-weight:700;white-space:nowrap}
-  td.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans KR",monospace;font-size:12.5px}
-  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--pc);background:var(--pb)}
-  .pill.ok{--pc:var(--ok);--pb:var(--ok-soft)} .pill.warn{--pc:var(--warn);--pb:var(--warn-soft)} .pill.err,.pill.miss{--pc:var(--err);--pb:var(--err-soft)} .pill.extra{--pc:var(--extra);--pb:var(--extra-soft)} .pill.skip{--pc:var(--skip);--pb:var(--skip-soft)}
-  .g{display:inline-block;min-width:22px;text-align:center;font-weight:700;border-radius:5px;padding:0 5px;background:var(--skip-soft);color:var(--ink-2);font-size:12px}
-  .spec{display:flex;flex-wrap:wrap;gap:4px 8px;color:var(--ink-2)}
-  .spec b{color:var(--ink);font-weight:500}
-  .spec .dim{color:var(--ink-3)}
-  .issues{display:flex;flex-direction:column;gap:4px}
-  .iss{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-  .iss .k{font-weight:700;min-width:46px}
-  .iss.err .k{color:var(--err)} .iss.warn .k{color:var(--warn)}
-  .iss .v{padding:1px 7px;border-radius:5px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans KR",monospace;font-size:12.5px;white-space:pre-wrap}
-  .iss .v.old{background:var(--old)} .iss .v.new{background:var(--new)}
-  .iss .arrow{color:var(--ink-3)}
-  .iss .note{color:var(--ink-3);font-size:12px}
-  .empty{padding:36px 16px;text-align:center;color:var(--ink-3)}
-  .foot{color:var(--ink-3);font-size:12px;line-height:1.7}
-  .msg{color:var(--err);font-size:13px}
-  details.rules{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px;color:var(--ink-2);font-size:13px}
-  details.rules summary{cursor:pointer;font-weight:500;color:var(--ink)}
-  details.rules p{margin:8px 0 0}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <div class="wrap">
   <header>
     <h1>골드펜 입력 검수</h1>
-    <p>플레이오토 발주서와 골드펜 주문리스트를 고객별로 대조해 사이즈·재질·색상·스톤 입력 실수를 찾습니다. 파일은 이 브라우저 안에서만 처리됩니다.</p>
+    <p>플레이오토 발주서와 골드펜 주문리스트를 고객별로 대조해 사이즈·재질·색상·스톤·안쪽막음 입력 실수를 찾습니다. 파일은 이 브라우저 안에서만 처리됩니다.</p>
   </header>
 
   <div class="drops">
@@ -177,8 +193,8 @@
 
   <div class="tiles" id="tiles" hidden>
     <div class="tile ok" data-st="ok" role="button" tabindex="0" title="클릭하면 일치 항목만 표시"><span class="n" id="nOk">0</span><span class="t">일치</span></div>
-    <div class="tile err" data-st="err" role="button" tabindex="0" title="클릭하면 불일치 항목만 표시"><span class="n" id="nErr">0</span><span class="t">불일치 (사이즈·재질·색상)</span></div>
-    <div class="tile warn" data-st="warn" role="button" tabindex="0" title="클릭하면 확인 항목만 표시"><span class="n" id="nWarn">0</span><span class="t">확인 (스톤·도금·표기)</span></div>
+    <div class="tile err" data-st="err" role="button" tabindex="0" title="클릭하면 불일치 항목만 표시"><span class="n" id="nErr">0</span><span class="t">불일치 (사이즈·재질·색상·안쪽막음)</span></div>
+    <div class="tile warn" data-st="warn" role="button" tabindex="0" title="클릭하면 확인 항목만 표시"><span class="n" id="nWarn">0</span><span class="t">확인 (표기·해석 못한 말)</span></div>
     <div class="tile miss" data-st="miss" role="button" tabindex="0" title="클릭하면 누락 항목만 표시"><span class="n" id="nMiss">0</span><span class="t">누락 (골드펜에 없음)</span></div>
     <div class="tile extra" data-st="extra" role="button" tabindex="0" title="클릭하면 추가 항목만 표시"><span class="n" id="nExtra">0</span><span class="t">추가 (발주서에 없음)</span></div>
     <div class="tile skip" data-st="skip" role="button" tabindex="0" title="클릭하면 제외 항목만 표시"><span class="n" id="nSkip">0</span><span class="t">비교 제외</span></div>
@@ -192,11 +208,43 @@
     </div>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>상태</th><th>고객</th><th>발주서 (플토)</th><th>골드펜</th><th>지적사항</th></tr></thead>
+        <thead><tr><th>상태</th><th>고객</th><th>발주서 (플토)</th><th>골드펜</th><th>검사 결과</th></tr></thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
   </div>
+
+  <details class="vocab" id="vocabPanel">
+    <summary>용어 설정 — 골드펜 표기를 어떻게 읽을지 직접 고칠 수 있습니다</summary>
+    <div class="grid">
+      <div class="f">
+        <label>안쪽막음 — 골드펜 표기</label>
+        <span class="hint">기타설명에 이 말이 있으면 안쪽막음 작업으로 읽습니다. 쉼표로 구분.</span>
+        <textarea id="vInlayGold" spellcheck="false"></textarea>
+      </div>
+      <div class="f">
+        <label>안쪽막음 — 발주서 표기</label>
+        <span class="hint">상품명이나 주문선택사항에 이 말이 있으면 안쪽막음 주문으로 읽습니다.</span>
+        <textarea id="vInlayEmp" spellcheck="false"></textarea>
+      </div>
+      <div class="f">
+        <label>기본 안쪽막음 제품</label>
+        <span class="hint">제조번호·상품명에 이 말이 있으면 따로 적지 않아도 안쪽막음으로 봅니다. 확인 항목의 "기본 안막 제품" 버튼으로도 추가됩니다.</span>
+        <textarea id="vInlayBase" spellcheck="false"></textarea>
+      </div>
+      <div class="f">
+        <label>무시할 메모</label>
+        <span class="hint">발주서에 근거가 없어도 괜찮은 작업 메모·일정 표기입니다. 여기 없는 말은 "해석 못한 표기"로 올라옵니다.</span>
+        <textarea id="vIgnore" spellcheck="false"></textarea>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="btnVocabSave" type="button">저장하고 다시 비교</button>
+      <button class="btn" id="btnVocabReset" type="button">기본값으로 되돌리기</button>
+      <span class="saved" id="vocabSaved" hidden>저장했습니다</span>
+      <span class="hint" id="vocabWhere" style="color:var(--ink-3);font-size:11.5px"></span>
+    </div>
+  </details>
 
   <div class="log" id="log">
     <div class="head">
@@ -210,7 +258,11 @@
 
   <details class="rules">
     <summary>어떤 기준으로 비교하나요</summary>
-    <p>발주서의 <b>수령자명</b>과 골드펜의 <b>실고객명</b>으로 사람을 맞춘 뒤, 주문선택사항을 남자/여자 조각으로 나눠 골드펜 행과 짝을 짓습니다(모델번호의 남/여·대/소·RL/RS와 사이즈로 판단). 각 짝에서 <b>사이즈</b>(17.5호 ↔ 17.5), <b>재질</b>(14K/18K, SILVER ↔ SV925), <b>색상</b>(화이트→WG·무도금W, 옐로우→YG, 로즈→PG, 화이트&amp;로즈→W/P, 리얼실버→빈칸)이 다르면 <b>불일치</b>로 표시합니다. 스톤은 <b>천연 ↔ 랩그로운</b>이 뒤바뀌면 값 차이가 크므로 <b>불일치</b>(기타설명의 "천연"·"현대"·"GIA"를 천연, "랩"을 랩으로 읽습니다. 남자만 천연, 여자는 랩처럼 성별이 다른 경우도 각각 따로 봅니다), 부수(1부/2부/3부)나 SV 랩·도금 여부·유광 표기가 기타설명에 없으면 <b>확인</b>으로 표시합니다. 판매가 0원인 "추가 옵션 선택" 행은 같은 고객의 스톤 옵션으로 합쳐지고, 주문선택사항이 없는 상품(사이즈 측정기 등)은 비교에서 제외합니다. 팔찌는 길이 숫자가 사이즈·기타설명에 있는지 확인합니다.</p>
+    <p>발주서의 <b>수령자명</b>과 골드펜의 <b>실고객명</b>으로 사람을 맞춘 뒤, 주문선택사항을 남자/여자 조각으로 나눠 골드펜 행과 짝을 짓습니다(모델번호의 남/여·대/소·RL/RS와 사이즈로 판단). 검사 결과에는 <b>무엇을 검사했는지</b>가 항목별로 표시됩니다 — 칩이 없는 항목은 검사하지 않은 것입니다.</p>
+    <p><b>사이즈</b>(17.5호 ↔ 17.5), <b>재질</b>(14K/18K, SILVER ↔ SV925), <b>색상</b>(화이트→WG·무도금W, 옐로우→YG, 로즈→PG, 화이트&amp;로즈→W/P, 리얼실버→빈칸)이 다르면 <b>불일치</b>입니다. 색상 옵션이 "카카오톡 문의"처럼 자동으로 읽을 수 없는 주문이면 <b>확인</b>으로 넘깁니다.</p>
+    <p><b>안쪽막음</b>은 양방향으로 봅니다. 골드펜에 판메움·안바닥 판메움·초메움 같은 표기가 있는데 발주서에 안쪽막음 주문이 없으면 <b>불일치</b>(주문에 없는 작업이 들어간 경우). 반대로 발주서가 안쪽막음인데 골드펜에 표기가 없으면 제품 자체가 기본 안막일 수 있어 <b>확인</b>으로 올리고, 그 제품이 기본 안막이면 버튼 한 번으로 용어 설정에 등록해 다음부터 넘어가게 할 수 있습니다.</p>
+    <p><b>스톤</b>은 <b>천연 ↔ 랩그로운</b>이 뒤바뀌면 <b>불일치</b>(기타설명의 "천연"과 감정서 기관명 "현대"·"우신"·"GIA"를 천연으로, "랩"을 랩으로 읽습니다). 부수(1부/2부/3부)나 SV 랩·도금·유광 표기가 없으면 <b>확인</b>입니다. 성별이 붙은 옵션(남자 메인 스톤)은 그 반지에서, 성별 없는 옵션(메인 스톤 선택)은 같은 고객의 아무 행에서나 찾습니다.</p>
+    <p>골드펜 기타설명은 슬래시·쉼표로 쪼개어 조각마다 뜻을 찾습니다. <b>용어 설정에 없는 말</b>은 "해석 못한 표기"로 <b>확인</b>에 올라옵니다 — 검수가 모르고 지나친 작업을 눈에 보이게 하려는 장치입니다. 작업 메모라면 용어 설정의 "무시할 메모"에 추가하세요.</p>
   </details>
 
   <p class="foot">발주서 형식 대신 골드펜 형식 파일 두 개를 올리면 접수번호 기준 셀 단위 비교로 자동 전환됩니다.</p>
@@ -243,18 +295,39 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 <script>
 (function(){
   const $=id=>document.getElementById(id);
-  const state={A:null,B:null,result:null,filter:null,fileA:'',fileB:'',loggedSig:''};
+  const state={A:null,B:null,result:null,filter:null,fileA:'',fileB:'',loggedSig:'',logId:null,ack:new Set()};
 
   // ---------- options persistence (per-viewer convenience only)
   const optIds=['optSkipX','optSiteFilter','optShowOk'];
   try{const s=JSON.parse(localStorage.getItem('gp-check-opts2')||'{}');optIds.forEach(id=>{if(id in s)$(id).checked=!!s[id];});}catch(e){}
   function saveOpts(){try{const s={};optIds.forEach(id=>s[id]=$(id).checked);localStorage.setItem('gp-check-opts2',JSON.stringify(s));}catch(e){}}
 
+  // ---------- vocabulary (editable on screen, shared through the artifact store when available)
+  const VOCAB_DEFAULT={
+    inlayGold:['판메움','안바닥 판메움','안바닥판메움','안바닥메움','초메움','안쪽막음','안쪽 막음','안막'],
+    inlayEmp:['안쪽막음','안쪽 막음','안막'],
+    inlayBase:['기본안막','기본 안막'],
+    ignore:['급자','초급','매장걸로','매장 걸로','모노','보류','쌍지','메인링','가드링','더큼','더 큼','채운하트','빈하트','판메움x','출고','도착','까지','부탁','문자','전화','이니셜','서체','생년월일','웨딩','붙임제작','라운드','프린세스','투명','측면','큐빅']
+  };
+  const VOCAB_FIELDS=[['inlayGold','vInlayGold'],['inlayEmp','vInlayEmp'],['inlayBase','vInlayBase'],['ignore','vIgnore']];
+  let VOCAB=JSON.parse(JSON.stringify(VOCAB_DEFAULT));
+  const splitList=s=>String(s||'').split(/[,\n]/).map(x=>x.trim()).filter(Boolean);
+  function vocabToForm(){ VOCAB_FIELDS.forEach(([k,id])=>{$(id).value=(VOCAB[k]||[]).join(', ');}); }
+  function vocabFromForm(){ VOCAB_FIELDS.forEach(([k,id])=>{VOCAB[k]=splitList($(id).value);}); }
+  function vocabLoadLocal(){ try{const s=JSON.parse(localStorage.getItem('gp-check-vocab')||'null'); if(s) VOCAB=Object.assign(JSON.parse(JSON.stringify(VOCAB_DEFAULT)),s);}catch(e){} }
+  function vocabSaveLocal(){ try{localStorage.setItem('gp-check-vocab',JSON.stringify(VOCAB));}catch(e){} }
+  async function vocabSave(){
+    vocabSaveLocal();
+    const db=await getDb();
+    if(db&&dbRef){ try{ await db.doc('config/vocab').set({v:VOCAB,ts:new Date().toISOString()}); }catch(e){} }
+  }
+  vocabLoadLocal(); vocabToForm();
+
   // ---------- file reading (binary xls/xlsx and HTML-table .xls)
   function isHtml(buf){
     const u=new Uint8Array(buf.slice(0,600)); let s='';
     for(let i=0;i<u.length;i++) s+=String.fromCharCode(u[i]);
-    s=s.replace(/^﻿|^\xEF\xBB\xBF/,'').trimStart().toLowerCase();
+    s=s.replace(/^﻿/,'').trimStart().toLowerCase();
     return s.startsWith('<')&&(s.includes('<table')||s.includes('<html')||s.includes('<!doctype'));
   }
   function decodeText(buf){
@@ -295,6 +368,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   const esc=s=>String(s??'').replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
   const num=s=>{const m=String(s??'').replace(/,/g,'').match(/-?\d+(\.\d+)?/);return m?Number(m[0]):null;};
   const compact=s=>String(s??'').toLowerCase().replace(/\s+/g,'');
+  const blank=s=>{const t=norm(s); return !t||t.toLowerCase()==='nan';};
 
   function material(txt){
     const t=String(txt||'').toUpperCase().replace(/\s+/g,'');
@@ -302,7 +376,6 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if(/SILVER|SV925|925|\bSV\b|실버/.test(t)) return 'SV925';
     return '';
   }
-  // color → set of letters W/Y/P ; also plated flag for silver
   function colorFromKorean(v){
     const t=String(v||'');
     const set=new Set();
@@ -339,12 +412,10 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if(/대(\b|$|[\]\)])/.test(t)) return '남'; if(/소(\b|$|[\]\)])/.test(t)) return '여';
     return '';
   }
-  // parse "k : v, k2 : v2" (commas inside values allowed as long as the next segment looks like "key :")
   function parseOptions(str){
     const s=String(str||'').trim(); if(!s||s.toLowerCase()==='nan') return [];
     return s.split(/,\s*(?=[^:,]{1,40}\s*:\s)/).map(p=>{const i=p.indexOf(':'); if(i<0) return null; return {k:p.slice(0,i).trim(),v:p.slice(i+1).trim()};}).filter(Boolean);
   }
-  // stone selection → expected tokens in 기타설명, plus the stone TYPE (천연 vs 랩)
   function stoneTokens(v){
     const t=String(v||'');
     if(!t||/선택\s*안함|큐빅|기본\s*세팅|기본\s*셋팅/.test(t)&&!/랩|천연/.test(t)) return [];
@@ -354,34 +425,53 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if(!out.length&&/랩\s*다이아|랩다이아/.test(t)) out.push('랩');
     return out;
   }
-  // 천연(내추럴) 다이아인지, 랩그로운인지 — 가격이 크게 달라 반드시 따로 본다
+  const LABS=/현대|우신|지아|GIA/i; // 천연 감정서 기관
   function stoneType(v){
     const t=String(v||'');
+    if(/랩\s*다이아|랩다이아|랩그로운/i.test(t)) return '랩';
     if(/천연|내추럴|내츄럴|natural/i.test(t)) return '천연';
-    if(/랩\s*다이아|랩다이아|랩그로운|lab/i.test(t)) return '랩';
+    if(LABS.test(t)) return '천연';
     return null;
   }
-  // 골드펜 기타설명에 그 종류가 적혀 있는지 (현대·GIA 등 감정서명은 천연 표기로 본다)
   function typeInEtc(type,etc){
     const t=String(etc||'');
-    if(type==='천연') return /천연|현대|지아|GIA/i.test(t);
+    if(type==='천연') return /천연/.test(t)||LABS.test(t);
     if(type==='랩') return /랩/.test(t);
     return true;
+  }
+  // ---- 안쪽막음
+  const hit=(list,txt)=>{const t=compact(txt); return (list||[]).some(w=>w&&t.includes(compact(w)));};
+  const inlayInGold=r=>hit(VOCAB.inlayGold,r['기타설명']);
+  const inlayIsBase=r=>hit(VOCAB.inlayBase,(r['제조번호']||'')+' '+(r['모델번호']||'')+' '+(r['제조사']||''));
+
+  // ---- 기타설명 조각 분류: 모르는 말을 눈에 보이게 하는 장치
+  function fragments(etc){
+    return String(etc||'').split(/[\/,]|·/).map(s=>s.trim()).filter(Boolean);
+  }
+  function fragKnown(f){
+    if(!/[가-힣a-zA-Z]/.test(f)) return true;                       // 기호·숫자만
+    if(/^\(?\s*[\d.]+\s*(mm|cm|호|개|ct)?\s*\)?$/i.test(f)) return true;
+    if(/\d{2,4}\s*[.\-/]\s*\d{1,2}/.test(f)) return true;           // 날짜
+    if(/\d\s*부|랩|천연|sv|다이아|큐빅|현대|우신|GIA/i.test(f)) return true;   // 스톤
+    if(/도금/.test(f)) return true;
+    if(/유광|무광/.test(f)) return true;
+    if(hit(VOCAB.inlayGold,f)||hit(VOCAB.inlayBase,f)) return true;
+    if(hit(VOCAB.ignore,f)) return true;
+    return false;
   }
 
   // ---------- EMP → expected pieces per customer
   function buildExpected(emp){
-    const cust=new Map(); // name → {name, items:[], pieces:[], stones:{남:[],여:[],공용:[]}, skipped:[]}
+    const cust=new Map();
     const get=n=>{if(!cust.has(n)) cust.set(n,{name:n,items:[],pieces:[],stones:{남:[],여:[],공용:[]},finish:{},sites:new Set()}); return cust.get(n);};
     const sites=new Set();
     emp.rows.forEach(r=>{
       const name=norm(r['수령자명']); if(!name) return;
       const c=get(name); const site=norm(r['판매사이트명']); if(site){c.sites.add(site);sites.add(site);}
-      const prod=norm(r['상품명']); const opts=parseOptions(r['주문선택사항']);
+      const prod=norm(r['상품명']); const optRaw=norm(r['주문선택사항']); const opts=parseOptions(optRaw);
       const qty=Math.max(1,num(r['주문수량'])||1);
       const price=num(r['판매가']);
       const isAddon=/추가\s*옵션/.test(prod)||(price===0&&opts.every(o=>/스톤/.test(o.k)));
-      // stones & finish are collected regardless of row type
       opts.forEach(o=>{
         const g=genderOfKey(o.k);
         if(/스톤/.test(o.k)){ const toks=stoneTokens(o.v), type=stoneType(o.v); if(toks.length||type){ const both=/1\s*\+\s*1/.test(o.v); c.stones[g].push({toks,type,raw:o.v,both,prod}); } }
@@ -397,11 +487,12 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
         else if(/상품\s*선택|상품선택|타입|재질/.test(o.k)){ const m=material(o.v); if(m) mats[g]=m; }
       });
       const baseMat=material(opts.map(o=>o.v).join(' '))||material(prod);
+      const inlay=hit(VOCAB.inlayEmp,prod+' '+optRaw);   // 상품명 + 주문선택사항 양쪽
       const genders=[...new Set([...Object.keys(sizes),...Object.keys(lengths)])];
       if(!genders.length){ c.items.push({prod,skip:true,row:r,reason:opts.length?'사이즈·길이 옵션 없음':'주문선택사항 없음'}); return; }
       c.items.push({prod,row:r});
       for(let q=0;q<qty;q++) genders.forEach(g=>{
-        c.pieces.push({cust:name,prod,gender:g,size:sizes[g]??null,length:lengths[g]??null,
+        c.pieces.push({cust:name,prod,gender:g,size:sizes[g]??null,length:lengths[g]??null,inlay,
           material:mats[g]||mats['공용']||baseMat||'',color:colorFromKorean(colors[g]||colors['공용']||''),
           colorRaw:colors[g]||colors['공용']||'',matched:null});
       });
@@ -429,46 +520,97 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     }
     return {pairs,missing:P,extra:R};
   }
-  function checkPair(p,r,c){
-    const issues=[]; // {level:'err'|'warn', k, from, to, note}
+
+  function checkPair(p,r,c,sib){
+    const issues=[], checks=[];
+    const mark=(k,ok)=>checks.push({k,ok});
+
+    // 사이즈 / 길이
     const rs=num(r['사이즈']);
-    if(p.size!==null){ if(rs===null) issues.push({level:'err',k:'사이즈',from:p.size+'호',to:'(빈칸)'}); else if(rs!==p.size) issues.push({level:'err',k:'사이즈',from:p.size+'호',to:String(r['사이즈'])}); }
+    if(p.size!==null){
+      if(rs===null){ issues.push({level:'err',k:'사이즈',from:p.size+'호',to:'(빈칸)'}); mark('사이즈',false); }
+      else if(rs!==p.size){ issues.push({level:'err',k:'사이즈',from:p.size+'호',to:String(r['사이즈'])}); mark('사이즈',false); }
+      else mark('사이즈',true);
+    }
     if(p.length){
       const nums=(String(p.length).match(/\d+(\.\d+)?/g)||[]); const hay=compact(r['사이즈']+' '+r['기타설명']);
       const miss=nums.filter(n=>!hay.includes(n));
-      if(miss.length) issues.push({level:'err',k:'길이',from:p.length,to:(r['사이즈']||'')+' '+(r['기타설명']||''),note:'길이 숫자 '+miss.join(', ')+'가 골드펜에 없음'});
+      if(miss.length){ issues.push({level:'err',k:'길이',from:p.length,to:(r['사이즈']||'')+' '+(r['기타설명']||''),note:'길이 숫자 '+miss.join(', ')+'가 골드펜에 없음'}); mark('길이',false); }
+      else mark('길이',true);
     }
+    // 재질
     const rm=material(r['재질']);
-    if(p.material&&rm!==p.material) issues.push({level:'err',k:'재질',from:p.material,to:r['재질']||'(빈칸)'});
+    if(p.material){ if(rm!==p.material){ issues.push({level:'err',k:'재질',from:p.material,to:r['재질']||'(빈칸)'}); mark('재질',false); } else mark('재질',true); }
+    // 색상 · 도금
     const rc=colorFromGold(r['색상']);
     if(p.colorRaw){
-      if(p.color.real){ if(rc.set.size) issues.push({level:'warn',k:'색상',from:p.colorRaw,to:r['색상'],note:'리얼실버(도금 없음)인데 색상이 들어 있음'}); if(!/도금\s*x|무도금|도금없음/i.test(r['기타설명']||'')) issues.push({level:'warn',k:'도금',from:'도금 없음',to:r['기타설명']||'(빈칸)',note:'기타설명에 "도금x" 표기 없음'}); }
-      else if(!setEq(rc.set,p.color.set)) issues.push({level:'err',k:'색상',from:p.colorRaw+' ('+setStr(p.color.set)+')',to:(r['색상']||'(빈칸)')+' ('+setStr(rc.set)+')'});
+      if(p.color.real){
+        let bad=false;
+        if(rc.set.size){ issues.push({level:'warn',k:'색상',from:p.colorRaw,to:r['색상'],note:'리얼실버(도금 없음)인데 색상이 들어 있음'}); bad=true; }
+        if(!/도금\s*x|무도금|도금없음/i.test(r['기타설명']||'')){ issues.push({level:'warn',k:'도금',from:'도금 없음',to:r['기타설명']||'(빈칸)',note:'기타설명에 "도금x" 표기 없음'}); bad=true; }
+        mark('색상',!bad);
+      }
+      else if(!p.color.set.size){ issues.push({level:'warn',k:'색상',from:p.colorRaw,to:(r['색상']||'(빈칸)')+(r['기타설명']?' / '+r['기타설명']:''),note:'색상을 자동으로 읽을 수 없는 주문(별도 문의·맞춤 조합 등) — 직접 확인하세요'}); mark('색상',false); }
+      else if(!setEq(rc.set,p.color.set)){ issues.push({level:'err',k:'색상',from:p.colorRaw+' ('+setStr(p.color.set)+')',to:(r['색상']||'(빈칸)')+' ('+setStr(rc.set)+')'}); mark('색상',false); }
+      else mark('색상',true);
       if(p.color.plated&&p.material==='SV925'&&!/도금(?!\s*x)/.test(r['기타설명']||'')) issues.push({level:'warn',k:'도금',from:p.colorRaw,to:r['기타설명']||'(빈칸)',note:'실버 도금 주문인데 기타설명에 "도금" 표기 없음'});
     }
+    // 남/여
     const rg=genderOfModel(r['모델번호']);
     if(rg&&p.gender!=='공용'&&rg!==p.gender) issues.push({level:'warn',k:'남/여',from:p.gender,to:rg+' ('+r['모델번호']+')',note:'모델번호 성별 표기가 발주와 다름 — 사이즈로 짝지음'});
-    // stones
+
+    // 안쪽막음 — 양방향
+    const gold=inlayInGold(r), base=inlayIsBase(r);
+    if(p.inlay){
+      if(gold||base) mark('안쪽막음',true);
+      else { issues.push({level:'warn',k:'안쪽막음',from:'발주: 안쪽막음',to:r['기타설명']||'(빈칸)',
+        note:'골드펜에 안쪽막음 표기가 없습니다 — 제품 자체가 기본 안막이면 아래 버튼으로 등록하세요',
+        fix:{type:'base',val:norm(r['제조번호'])||norm(r['모델번호'])}}); mark('안쪽막음',false); }
+    }else{
+      if(gold){ issues.push({level:'err',k:'안쪽막음',from:'발주: 안쪽막음 아님',to:r['기타설명']||'(빈칸)',
+        note:'발주서에 없는 안쪽막음 작업이 골드펜에 들어갔습니다'}); mark('안쪽막음',false); }
+      else mark('안쪽막음',true);
+    }
+
+    // 스톤
     const etc=compact(r['기타설명']);
-    const stones=[...c.stones[p.gender]||[],...c.stones['공용'],...(p.gender!=='공용'?(c.stones[p.gender==='남'?'여':'남']||[]).filter(s=>s.both):[])];
-    const wanted=new Set(); stones.forEach(s=>s.toks.forEach(t=>wanted.add(t)));
-    wanted.forEach(t=>{
-      const ok= t==='SV랩'? /sv랩|sv\s*랩|sv다이아/.test(etc.replace(/\s/g,'')) : t==='랩'? /랩/.test(etc) : etc.includes(compact(t));
-      if(!ok) issues.push({level:'warn',k:'스톤',from:stones.filter(s=>s.toks.includes(t)).map(s=>s.raw).join(' / '),to:r['기타설명']||'(빈칸)',note:'"'+t+'" 표기가 기타설명에 없음'});
+    const allEtc=sib?compact(sib.raw):etc, allRaw=sib?sib.raw:(r['기타설명']||'');
+    const own=[...(c.stones[p.gender]||[]),...(p.gender!=='공용'?(c.stones[p.gender==='남'?'여':'남']||[]).filter(s=>s.both):[])];
+    const shared=p.gender==='공용'?[]:[...(c.stones['공용']||[])];
+    const hasTok=(t,hay)=> t==='SV랩'? /sv랩|sv다이아/.test(hay) : t==='랩'? /랩/.test(hay) : hay.includes(compact(t));
+    let stoneBad=false;
+    [[own,etc,r['기타설명']||'(빈칸)',false],[shared,allEtc,allRaw||'(빈칸)',true]].forEach(([list,hay,shown,isShared])=>{
+      if(!list.length) return;
+      const wanted=new Set(); list.forEach(s=>s.toks.forEach(t=>wanted.add(t)));
+      wanted.forEach(t=>{
+        if(hasTok(t,hay)) return;
+        stoneBad=true;
+        issues.push({level:'warn',k:'스톤',from:list.filter(s=>s.toks.includes(t)).map(s=>s.raw).join(' / '),to:shown,
+          note:'"'+t+'" 표기가 '+(isShared?'이 고객의 어느 행에도':'기타설명에')+' 없음'});
+      });
+      new Set(list.map(s=>s.type).filter(Boolean)).forEach(ty=>{
+        const target=isShared?allRaw:r['기타설명'];
+        if(typeInEtc(ty,target)) return;
+        stoneBad=true;
+        const other= ty==='천연'?'랩':'천연';
+        issues.push({level:'err',k:'스톤종류',from:list.filter(s=>s.type===ty).map(s=>s.raw).join(' / '),to:shown,
+          note: typeInEtc(other,target)? `발주는 ${ty}다이아인데 골드펜은 ${other}으로 입력됨` : `${isShared?'이 고객의 어느 행에도':'기타설명에'} "${ty}" 표기가 없음`});
+      });
     });
-    // 천연 ↔ 랩그로운: 값이 크게 달라 불일치(빨강)로 본다
-    const types=new Set(stones.map(s=>s.type).filter(Boolean));
-    types.forEach(ty=>{
-      if(typeInEtc(ty,r['기타설명'])) return;
-      const other= ty==='천연'?'랩':'천연';
-      const wrong= typeInEtc(other,r['기타설명']);
-      issues.push({level:'err',k:'스톤종류',from:stones.filter(s=>s.type===ty).map(s=>s.raw).join(' / '),to:r['기타설명']||'(빈칸)',
-        note: wrong? `발주는 ${ty}다이아인데 골드펜은 ${other}으로 입력됨` : `기타설명에 "${ty}" 표기가 없음`});
-    });
-    if(stones.length===0&&/(\d)부\s*랩|sv\s*랩/i.test(r['기타설명']||'')&&!(c.stones['남'].length||c.stones['여'].length||c.stones['공용'].length)) issues.push({level:'warn',k:'스톤',from:'(발주에 스톤 옵션 없음)',to:r['기타설명'],note:'발주서에는 없는 랩다이아 표기가 있음'});
+    if(own.length||shared.length) mark('스톤',!stoneBad);
+    else if(/(\d)부\s*랩|sv\s*랩/i.test(r['기타설명']||'')&&!(c.stones['남'].length||c.stones['여'].length||c.stones['공용'].length)){
+      issues.push({level:'warn',k:'스톤',from:'(발주에 스톤 옵션 없음)',to:r['기타설명'],note:'발주서에는 없는 랩다이아 표기가 있음'}); mark('스톤',false);
+    }
+    // 광
     const fin=c.finish[p.gender]||c.finish['공용'];
-    if(fin&&!etc.includes(fin)) issues.push({level:'warn',k:'광',from:fin,to:r['기타설명']||'(빈칸)',note:'기타설명에 "'+fin+'" 표기 없음'});
-    return issues;
+    if(fin){ if(etc.includes(fin)) mark('광',true); else { issues.push({level:'warn',k:'광',from:fin,to:r['기타설명']||'(빈칸)',note:'기타설명에 "'+fin+'" 표기 없음'}); mark('광',false); } }
+
+    // 해석 못한 표기 — 검수가 모르고 지나친 작업을 드러낸다
+    const unknown=fragments(r['기타설명']).filter(f=>!fragKnown(f));
+    if(unknown.length) issues.push({level:'warn',k:'해석 못함',from:unknown.join(' / '),to:'(뜻을 모르는 표기)',
+      note:'작업 메모라면 용어 설정에 추가하세요',fix:{type:'ignore',val:unknown.join(', ')}});
+
+    return {issues,checks};
   }
 
   // ---------- compare (EMP mode)
@@ -486,16 +628,20 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       cu.items.filter(i=>i.skip).forEach(i=>{out.push({st:'skip',cust:name,prod:i.prod,note:i.reason+' — 비교 제외'}); c.skip++;});
       if(!cu.pieces.length){ rowsFor.forEach(r=>{out.push({st:'extra',cust:name,r}); c.extra++;}); continue; }
       const {pairs,missing,extra}=matchCustomer(cu,rowsFor);
-      pairs.forEach(({p,r})=>{ const issues=checkPair(p,r,cu); const st=issues.some(i=>i.level==='err')?'err':issues.length?'warn':'ok'; c[st]++; out.push({st,cust:name,p,r,issues,stones:cu.stones}); });
-      missing.forEach(p=>{out.push({st:'miss',cust:name,p,stones:cu.stones}); c.miss++;});
-      extra.forEach(r=>{out.push({st:'extra',cust:name,r}); c.extra++;});
+      const sib={raw:pairs.map(({r})=>r['기타설명']||'').filter(Boolean).join(' / ')};
+      pairs.forEach(({p,r})=>{
+        const {issues,checks}=checkPair(p,r,cu,sib);
+        const st=issues.some(i=>i.level==='err')?'err':issues.length?'warn':'ok'; c[st]++;
+        out.push({st,cust:name,p,r,issues,checks,stones:cu.stones,key:name+'|'+p.gender+'|'+(r['접수번호']||'')});
+      });
+      missing.forEach(p=>{out.push({st:'miss',cust:name,p,stones:cu.stones,key:name+'|'+p.gender+'|miss'}); c.miss++;});
+      extra.forEach(r=>{out.push({st:'extra',cust:name,r,key:name+'|x|'+(r['접수번호']||'')}); c.extra++;});
     }
-    for(const [name,rs] of byName) rs.forEach(r=>{out.push({st:'extra',cust:name,r,note:'발주서에 이 수령자가 없음'}); c.extra++;});
+    for(const [name,rs] of byName) rs.forEach(r=>{out.push({st:'extra',cust:name,r,note:'발주서에 이 수령자가 없음',key:name+'|x|'+(r['접수번호']||'')}); c.extra++;});
     skippedRows.forEach(({r,why})=>{out.push({st:'skip',cust:norm(r['실고객명']),r,note:why}); c.skip++;});
     const order={err:0,miss:1,extra:2,warn:3,ok:4,skip:5};
-    // group by customer, customers with worst status first
     const worst=new Map(); out.forEach(x=>{const w=worst.get(x.cust); if(w===undefined||order[x.st]<w) worst.set(x.cust,order[x.st]);});
-    out.sort((a,b)=>worst.get(a.cust)-worst.get(b.cust)||a.cust.localeCompare(b.cust)||order[a.st]-order[b.st]||String(a.p?.gender||'').localeCompare(String(b.p?.gender||'')));
+    out.sort((a,b)=>worst.get(a.cust)-worst.get(b.cust)||String(a.cust).localeCompare(String(b.cust))||order[a.st]-order[b.st]||String(a.p?.gender||'').localeCompare(String(b.p?.gender||'')));
     return {mode:'emp',out,c,info:`발주서 고객 ${cust.size}명 · 기대 조각 ${[...cust.values()].reduce((s,x)=>s+x.pieces.length,0)}건 · 골드펜 비교 대상 ${rows.length}행`};
   }
 
@@ -508,13 +654,13 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     const gA=group(A.rows), gB=group(B.rows); const out=[]; const c={ok:0,err:0,warn:0,miss:0,extra:0,skip:0};
     for(const [k,la] of gA){ const lb=gB.get(k)||[];
       la.forEach((a,i)=>{ const b=lb[i];
-        if(!b){ if(skipX&&norm(a['단계']).toUpperCase()==='X'){out.push({st:'skip',cust:a['실고객명'],r:a,note:'단계 X'});c.skip++;} else {out.push({st:'miss',cust:a['실고객명'],r:a,note:'골드펜 결과에 접수번호 '+k+' 없음'});c.miss++;} return; }
+        if(!b){ if(skipX&&norm(a['단계']).toUpperCase()==='X'){out.push({st:'skip',cust:a['실고객명'],r:a,note:'단계 X'});c.skip++;} else {out.push({st:'miss',cust:a['실고객명'],r:a,note:'골드펜 결과에 접수번호 '+k+' 없음',key:k});c.miss++;} return; }
         const issues=cols.filter(col=>canon(a[col])!==canon(b[col])).map(col=>({level:'err',k:col,from:a[col]||'(빈칸)',to:b[col]||'(빈칸)'}));
-        const st=issues.length?'err':'ok'; c[st]++; out.push({st,cust:a['실고객명'],r:b,issues,gold:true});
+        const st=issues.length?'err':'ok'; c[st]++; out.push({st,cust:a['실고객명'],r:b,issues,gold:true,key:k});
       });
-      lb.slice(la.length).forEach(b=>{out.push({st:'extra',cust:b['실고객명'],r:b});c.extra++;});
+      lb.slice(la.length).forEach(b=>{out.push({st:'extra',cust:b['실고객명'],r:b,key:k+'x'});c.extra++;});
     }
-    for(const [k,lb] of gB) if(!gA.has(k)) lb.forEach(b=>{out.push({st:'extra',cust:b['실고객명'],r:b,note:'기준 파일에 접수번호 '+k+' 없음'});c.extra++;});
+    for(const [k,lb] of gB) if(!gA.has(k)) lb.forEach(b=>{out.push({st:'extra',cust:b['실고객명'],r:b,note:'기준 파일에 접수번호 '+k+' 없음',key:k+'x'});c.extra++;});
     const order={err:0,miss:1,extra:2,warn:3,ok:4,skip:5}; out.sort((a,b)=>order[a.st]-order[b.st]);
     return {mode:'gold',out,c,info:`골드펜 형식 두 파일 · 접수번호 기준 ${cols.length}개 컬럼 셀 비교`};
   }
@@ -527,7 +673,9 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       if(A.kind==='emp'&&B.kind==='gold') state.result=compareEmp(A,B);
       else if(A.kind==='gold'&&B.kind==='gold') state.result=compareGold(A,B);
       else throw new Error('발주서 파일 두 개가 올라왔습니다. 오른쪽에는 골드펜 주문리스트를 올려주세요.');
-      setMsg(''); state.filter=null; render();
+      setMsg(''); state.filter=null;
+      if(opts&&opts.fresh){ state.ack=new Set(); state.logId=null; }
+      render();
       if(opts&&opts.log) logResult();
     }catch(e){ setMsg(e.message||String(e)); }
   }
@@ -541,6 +689,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if(p.size!==null) bits.push(`<b>${esc(p.size)}호</b>`);
     if(p.length) bits.push(`<b>${esc(p.length)}</b>`);
     if(p.colorRaw) bits.push(esc(p.colorRaw));
+    if(p.inlay) bits.push('<b>안쪽막음</b>');
     return `<div class="spec"><span class="g">${esc(p.gender)}</span>${bits.join('<span class="dim">·</span>')}</div><div class="spec dim" style="font-size:12px">${esc(p.prod)}</div>`;
   }
   function stonesHtml(stones,gender){
@@ -553,26 +702,40 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if(!r) return '';
     const bits=[];
     if(r['모델번호']) bits.push(`<b>${esc(r['모델번호'])}</b>`);
-    if(r['재질']) bits.push(esc(r['재질']));
-    if(r['색상']&&r['색상'].toLowerCase()!=='nan') bits.push(esc(r['색상']));
-    if(r['사이즈']&&r['사이즈'].toLowerCase()!=='nan') bits.push(`<b>${esc(r['사이즈'])}</b>`);
-    const etc=r['기타설명']&&r['기타설명'].toLowerCase()!=='nan'?`<div class="spec dim" style="font-size:12px">${esc(r['기타설명'])}</div>`:'';
+    if(!blank(r['제조번호'])&&norm(r['제조번호'])!==norm(r['모델번호'])) bits.push(esc(r['제조번호']));
+    if(!blank(r['재질'])) bits.push(esc(r['재질']));
+    if(!blank(r['색상'])) bits.push(esc(r['색상']));
+    if(!blank(r['사이즈'])) bits.push(`<b>${esc(r['사이즈'])}</b>`);
+    const etc=!blank(r['기타설명'])?`<div class="spec dim" style="font-size:12px">${esc(r['기타설명'])}</div>`:'';
     return `<div class="spec"><span class="dim">${esc(r['접수번호']||'')}</span>${bits.join('<span class="dim">·</span>')}</div>${etc}`;
   }
-  function issuesHtml(x){
+  function covHtml(checks){
+    if(!checks||!checks.length) return `<span style="color:var(--ink-3)">검사할 항목이 없습니다</span>`;
+    return `<div class="cov">${checks.map(c=>`<span class="${c.ok?'':'na'}">${esc(c.k)} ${c.ok?'✓':'✗'}</span>`).join('')}</div>`;
+  }
+  function issuesHtml(x,idx){
     if(x.st==='miss') return `골드펜에 이 조각의 행이 없습니다 — 입력이 빠졌는지 확인하세요.`;
     if(x.st==='extra') return (x.note?esc(x.note)+' — ':'')+`발주서에 대응하는 조각이 없는 골드펜 행입니다.`;
     if(x.st==='skip') return `<span style="color:var(--ink-3)">${esc(x.note||'')}</span>`;
-    if(!x.issues||!x.issues.length) return `<span style="color:var(--ink-3)">사이즈·재질·색상·스톤 모두 일치</span>`;
-    return `<div class="issues">${x.issues.map(i=>`<div class="iss ${i.level}"><span class="k">${esc(i.k)}</span><span class="v old">${esc(i.from)}</span><span class="arrow">→</span><span class="v new">${esc(i.to)}</span>${i.note?`<span class="note">${esc(i.note)}</span>`:''}</div>`).join('')}</div>`;
+    const cov=x.gold?'':covHtml(x.checks);
+    if(!x.issues||!x.issues.length) return cov;
+    const list=`<div class="issues">${x.issues.map(i=>{
+      const fix=i.fix?`<button class="fix" data-fix="${esc(i.fix.type)}" data-val="${esc(i.fix.val)}">${i.fix.type==='base'?'기본 안막 제품으로 등록':'무시할 메모로 등록'}</button>`:'';
+      return `<div class="iss ${i.level}"><span class="k">${esc(i.k)}</span><span class="v old">${esc(i.from)}</span><span class="arrow">→</span><span class="v new">${esc(i.to)}</span>${i.note?`<span class="note">${esc(i.note)}</span>`:''}${fix}</div>`;
+    }).join('')}</div>`;
+    const ack=`<label class="ackbox"><input type="checkbox" data-ack="${esc(x.key||('i'+idx))}" ${state.ack.has(x.key||('i'+idx))?'checked':''}> 확인했음</label>`;
+    return cov+list+ack;
   }
   function render(){
     const R=state.result; if(!R) return; const {c}=R;
     const errs=c.err+c.miss+c.extra;
-    const v=$('verdict'); v.className='verdict '+(errs?'err':c.warn?'warn':'ok');
-    v.innerHTML= errs ? `⚠ 수정이 필요한 항목 ${errs}건 <small>· 불일치 ${c.err} · 누락 ${c.miss} · 추가 ${c.extra}${c.warn?` · 확인 ${c.warn}`:''}</small>`
-      : c.warn ? `△ 값은 모두 일치, 확인할 항목 ${c.warn}건 <small>· 스톤·도금·표기 관련</small>`
-      : `✓ 모두 일치합니다 <small>· ${c.ok}건 확인${c.skip?` · ${c.skip}건 제외`:''}</small>`;
+    const pending=R.out.filter(x=>(x.st==='err'||x.st==='warn'||x.st==='miss'||x.st==='extra')&&!state.ack.has(x.key)).length;
+    const v=$('verdict');
+    if(errs+c.warn===0){ v.className='verdict ok'; v.innerHTML=`✓ 모두 일치합니다 <small>· ${c.ok}건 검사${c.skip?` · ${c.skip}건 제외`:''}</small>`; }
+    else if(pending===0){ v.className='verdict ok'; v.innerHTML=`✓ 검토 완료 <small>· 지적 ${errs+c.warn}건을 모두 확인 처리했습니다</small>`; }
+    else { v.className='verdict '+(errs?'err':'warn');
+      v.innerHTML= errs ? `⚠ 수정이 필요한 항목 ${errs}건 <small>· 불일치 ${c.err} · 누락 ${c.miss} · 추가 ${c.extra}${c.warn?` · 확인 ${c.warn}`:''} · 남은 검토 ${pending}건</small>`
+        : `△ 값은 모두 일치, 확인할 항목 ${c.warn}건 <small>· 남은 검토 ${pending}건</small>`; }
     $('nOk').textContent=c.ok;$('nErr').textContent=c.err;$('nWarn').textContent=c.warn;$('nMiss').textContent=c.miss;$('nExtra').textContent=c.extra;$('nSkip').textContent=c.skip;
     $('tiles').hidden=false;$('results').hidden=false;$('btnCopy').hidden=false;$('colInfo').textContent=R.info;
     document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('active',t.dataset.st===state.filter));
@@ -583,22 +746,40 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     const tb=$('tbody');
     if(!rows.length){tb.innerHTML=`<tr><td colspan="5" class="empty">${state.filter?`"${label[state.filter]}" 항목이 없습니다.`:'표시할 항목이 없습니다.'}</td></tr>`;return;}
     let prev=null;
-    tb.innerHTML=rows.map(x=>{
+    tb.innerHTML=rows.map((x,idx)=>{
       const first=x.cust!==prev; prev=x.cust;
       const left = x.p ? pieceHtml(x.p)+stonesHtml(x.stones,x.p.gender) : x.prod ? `<div class="spec dim">${esc(x.prod)}</div>` : x.gold ? rowHtml(x.r) : '<span style="color:var(--ink-3)">—</span>';
-      const right = x.gold ? '' : rowHtml(x.r) || '<span style="color:var(--ink-3)">—</span>';
-      return `<tr class="${first?'cust-first':''}"><td><span class="pill ${x.st}">${label[x.st]}</span></td><td class="who">${first?esc(x.cust||''):''}</td><td>${left}</td><td>${x.gold?'<span style="color:var(--ink-3)">골드펜 형식 비교</span>':right}</td><td>${issuesHtml(x)}</td></tr>`;
+      const right = x.gold ? '<span style="color:var(--ink-3)">골드펜 형식 비교</span>' : (rowHtml(x.r) || '<span style="color:var(--ink-3)">—</span>');
+      const acked=state.ack.has(x.key)?' acked':'';
+      return `<tr class="${first?'cust-first':''}${acked}"><td><span class="pill ${x.st}">${label[x.st]}</span></td><td class="who">${first?esc(x.cust||''):''}</td><td>${left}</td><td>${right}</td><td>${issuesHtml(x,idx)}</td></tr>`;
     }).join('');
   }
+
+  // 표 안의 버튼/체크박스
+  $('tbody').addEventListener('click',async e=>{
+    const fix=e.target.closest('[data-fix]');
+    if(fix){
+      const key= fix.dataset.fix==='base'?'inlayBase':'ignore';
+      const vals=splitList(fix.dataset.val);
+      VOCAB[key]=[...new Set([...(VOCAB[key]||[]),...vals])];
+      vocabToForm(); await vocabSave(); compare();
+      return;
+    }
+  });
+  $('tbody').addEventListener('change',e=>{
+    const ack=e.target.closest('[data-ack]');
+    if(ack){ const k=ack.dataset.ack; if(ack.checked) state.ack.add(k); else state.ack.delete(k); render(); saveAck(); }
+  });
 
   function summaryLine(c){ return `일치 ${c.ok} / 불일치 ${c.err} / 확인 ${c.warn} / 누락 ${c.miss} / 추가 ${c.extra} / 제외 ${c.skip}`; }
   function issueLines(R){
     const lines=[];
     R.out.filter(x=>x.st!=='ok'&&x.st!=='skip').forEach(x=>{
       const who=x.cust||''; const g=x.p?`(${x.p.gender}${x.p.size!==null?' '+x.p.size+'호':''})`:''; const rid=x.r?` ${x.r['접수번호']||''} ${x.r['모델번호']||''}`:'';
-      if(x.st==='miss') lines.push(`[누락] ${who} ${g} ${x.p?.prod||''} — 골드펜에 없음`);
-      else if(x.st==='extra') lines.push(`[추가] ${who}${rid} — 발주서에 없음`);
-      else lines.push(`[${label[x.st]}] ${who} ${g}${rid}: `+x.issues.map(i=>`${i.k} "${i.from}"→"${i.to}"`).join(', '));
+      const ack=state.ack.has(x.key)?' [확인함]':'';
+      if(x.st==='miss') lines.push(`[누락] ${who} ${g} ${x.p?.prod||''} — 골드펜에 없음${ack}`);
+      else if(x.st==='extra') lines.push(`[추가] ${who}${rid} — 발주서에 없음${ack}`);
+      else lines.push(`[${label[x.st]}] ${who} ${g}${rid}: `+x.issues.map(i=>`${i.k} "${i.from}"→"${i.to}"`).join(', ')+ack);
     });
     return lines;
   }
@@ -608,7 +789,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     navigator.clipboard.writeText(lines.join('\n')).then(()=>{const b=$('btnCopy');b.textContent='복사됨';setTimeout(()=>b.textContent='결과 텍스트 복사',1500);}).catch(()=>{});
   }
 
-  // ---------- comparison log (shared store when the page runs on claude.ai, browser storage otherwise)
+  // ---------- comparison log
   const LOG_KEY='gp-check-log'; const LOG_MAX=200;
   let dbRef=null, dbTried=false, logEntries=[], logOpen=null;
   async function getDb(){
@@ -623,6 +804,11 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     const db=await getDb();
     if(db){
       $('logWhere').textContent='어느 PC에서 열어도 같은 기록이 보입니다';
+      $('vocabWhere').textContent='용어 설정도 모든 PC에서 공유됩니다';
+      try{
+        const snap=await db.doc('config/vocab').get();
+        if(snap.exists&&snap.data()&&snap.data().v){ VOCAB=Object.assign(JSON.parse(JSON.stringify(VOCAB_DEFAULT)),snap.data().v); vocabToForm(); vocabSaveLocal(); if(state.result) compare(); }
+      }catch(e){}
       try{
         db.collection('logs').orderBy('ts','desc').limit(LOG_MAX).onSnapshot(snap=>{
           logEntries=snap.docs.map(d=>({id:d.id,...d.data()})); renderLog();
@@ -630,28 +816,47 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       }catch(e){ dbRef=null; logEntries=localLogRead(); renderLog(); }
     }else{
       $('logWhere').textContent='이 PC의 브라우저에만 저장됩니다';
+      $('vocabWhere').textContent='용어 설정은 이 PC의 브라우저에 저장됩니다';
       logEntries=localLogRead(); renderLog();
     }
+  }
+  function logPayload(){
+    const R=state.result;
+    return {ts:new Date().toISOString(),fileA:state.fileA,fileB:state.fileB,mode:R.mode,c:R.c,info:R.info,
+      acked:state.ack.size,lines:issueLines(R).slice(0,300)};
   }
   async function logResult(){
     const R=state.result; if(!R) return;
     const lines=issueLines(R);
     const sig=[state.fileA,state.fileB,summaryLine(R.c),lines.join('\n')].join('|');
     if(sig===state.loggedSig) return; state.loggedSig=sig;
-    const entry={ts:new Date().toISOString(),fileA:state.fileA,fileB:state.fileB,mode:R.mode,c:R.c,info:R.info,lines:lines.slice(0,300)};
+    const entry=logPayload();
     const db=await getDb();
-    if(db){
+    if(db&&dbRef){
       const id=entry.ts.replace(/[^0-9]/g,'').slice(0,17)+'-'+Math.random().toString(36).slice(2,7);
-      try{ await db.collection('logs').doc(id).set(entry); return; }catch(e){ /* fall through to local */ }
+      state.logId=id;
+      try{ await db.collection('logs').doc(id).set(entry); return; }catch(e){}
     }
-    logEntries=[{id:'l'+Date.now(),...entry},...localLogRead()].slice(0,LOG_MAX); localLogWrite(logEntries); renderLog();
+    state.logId='l'+Date.now();
+    logEntries=[{id:state.logId,...entry},...localLogRead()].slice(0,LOG_MAX); localLogWrite(logEntries); renderLog();
+  }
+  let ackTimer=null;
+  function saveAck(){
+    if(!state.logId||!state.result) return;
+    clearTimeout(ackTimer);
+    ackTimer=setTimeout(async()=>{
+      const entry=logPayload();
+      const db=await getDb();
+      if(db&&dbRef&&!String(state.logId).startsWith('l')){ try{ await db.collection('logs').doc(state.logId).set(entry); return; }catch(e){} }
+      logEntries=logEntries.map(e=>e.id===state.logId?{id:e.id,...entry}:e); localLogWrite(logEntries); renderLog();
+    },600);
   }
   async function deleteLog(id){
     const db=await getDb();
     if(db&&dbRef){ try{ await db.collection('logs').doc(id).delete(); return; }catch(e){} }
     logEntries=logEntries.filter(e=>e.id!==id); localLogWrite(logEntries); renderLog();
   }
-  let armed=null, armTimer=null; // two-click confirmation (dialogs are blocked in some viewers)
+  let armed=null, armTimer=null;
   function arm(key,btn,txt){ if(armed===key) return true; armed=key; const orig=btn.textContent; btn.textContent=txt; clearTimeout(armTimer); armTimer=setTimeout(()=>{armed=null;btn.textContent=orig;},2500); return false; }
   async function clearLog(){
     const db=await getDb();
@@ -663,7 +868,9 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if(!logEntries.length){ ul.innerHTML=`<li class="empty" style="color:var(--ink-3)">아직 비교 기록이 없습니다. 비교를 실행하면 자동으로 남습니다.</li>`; return; }
     ul.innerHTML=logEntries.map(e=>{
       const c=e.c||{}; const bad=(c.err||0)+(c.miss||0)+(c.extra||0);
-      const pills=[bad?`<span class="pill err">수정 ${bad}</span>`:'',c.warn?`<span class="pill warn">확인 ${c.warn}</span>`:'',`<span class="pill ok">일치 ${c.ok||0}</span>`,(!bad&&!c.warn)?`<span class="pill ok">✓ 완료</span>`:''].join('');
+      const pills=[bad?`<span class="pill err">수정 ${bad}</span>`:'',c.warn?`<span class="pill warn">확인 ${c.warn}</span>`:'',
+        e.acked?`<span class="pill skip">확인함 ${e.acked}</span>`:'',
+        `<span class="pill ok">일치 ${c.ok||0}</span>`,(!bad&&!c.warn)?`<span class="pill ok">✓ 완료</span>`:''].join('');
       const open=logOpen===e.id;
       const detail=open?`<div class="detail">${esc(summaryLine(c))}${e.info?'\n'+esc(e.info):''}${(e.lines&&e.lines.length)?'\n\n'+e.lines.map(esc).join('\n'):'\n\n지적사항 없음 — 모두 일치'}</div>`:'';
       return `<li><div class="row" data-id="${esc(e.id)}"><span class="when">${esc(fmtWhen(e.ts))}</span><span class="files">${esc(e.fileA||'')} ↔ ${esc(e.fileB||'')}</span><span class="sum">${pills}</span><button class="del" data-del="${esc(e.id)}" title="이 기록 삭제">삭제</button></div>${detail}</li>`;
@@ -676,6 +883,18 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   $('btnClearLog').addEventListener('click',()=>{ const b=$('btnClearLog'); if(arm('clear',b,'다시 누르면 전체 삭제')){armed=null;b.textContent='기록 전체 삭제';clearLog();} });
   setTimeout(initLog,300);
 
+  // ---------- vocab panel wiring
+  $('btnVocabSave').addEventListener('click',async()=>{
+    vocabFromForm(); await vocabSave();
+    const s=$('vocabSaved'); s.hidden=false; setTimeout(()=>s.hidden=true,1600);
+    compare();
+  });
+  $('btnVocabReset').addEventListener('click',async()=>{
+    const b=$('btnVocabReset'); if(!arm('vocab',b,'다시 누르면 초기화')) return;
+    armed=null; b.textContent='기본값으로 되돌리기';
+    VOCAB=JSON.parse(JSON.stringify(VOCAB_DEFAULT)); vocabToForm(); await vocabSave(); compare();
+  });
+
   // ---------- wiring
   function setMsg(t){const m=$('msg');m.hidden=!t;m.textContent=t||'';}
   async function load(side,file){
@@ -685,7 +904,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       state[side]=data; state['file'+side]=file.name;
       $('file'+side).innerHTML=`<b>${esc(file.name)}</b> · ${data.kind==='emp'?'발주서 형식':'골드펜 형식'} · ${data.rows.length}행`;
       $('hint'+side).hidden=true;$('drop'+side).classList.add('loaded');setMsg('');
-      if(state.A&&state.B) compare({log:true});
+      if(state.A&&state.B) compare({log:true,fresh:true});
       else{$('verdict').className='verdict idle';$('verdict').textContent=side==='A'?'골드펜 주문리스트 파일을 올려주세요.':'발주서 파일을 올려주세요.';}
     }catch(e){setMsg(`${file.name}: ${e.message||e}`);}
   }
@@ -707,7 +926,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   });
   $('btnClearFilter').addEventListener('click',()=>{state.filter=null;render();});
   $('btnReset').addEventListener('click',()=>{
-    state.A=state.B=state.result=null; state.filter=null; state.fileA=state.fileB=''; state.loggedSig='';
+    state.A=state.B=state.result=null; state.filter=null; state.fileA=state.fileB=''; state.loggedSig=''; state.logId=null; state.ack=new Set();
     document.querySelectorAll('.tile').forEach(t=>t.classList.remove('active')); $('filterbar').hidden=true;
     ['A','B'].forEach(s=>{$('in'+s).value='';$('file'+s).textContent='';$('hint'+s).hidden=false;$('drop'+s).classList.remove('loaded');});
     $('tiles').hidden=true;$('results').hidden=true;$('btnCopy').hidden=true;setMsg('');
