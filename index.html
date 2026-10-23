@@ -47,6 +47,8 @@
     --shadow:none;
   }
   *{box-sizing:border-box}
+  /* 단독 html 파일로 열 때도 hidden 속성이 클래스의 display를 이기도록 */
+  [hidden]{display:none!important}
   body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 "Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-variant-numeric:tabular-nums}
   .wrap{max-width:1240px;margin:0 auto;padding-block:28px 48px;padding-inline:16px;display:flex;flex-direction:column;gap:18px}
   header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
@@ -172,14 +174,15 @@
 <div class="wrap">
   <header>
     <h1>골드펜 입력 검수</h1>
-    <span class="ver">v1.7 · 2026-10-23</span>
+    <span class="ver">v1.8 · 2026-10-23</span>
     <p>플레이오토 발주서와 골드펜 주문리스트를 고객별로 대조해 사이즈·재질·색상·스톤·안쪽막음 입력 실수를 찾습니다. 파일은 이 브라우저 안에서만 처리됩니다.</p>
   </header>
 
   <details class="changelog">
-    <summary>변경 내역 — 최종 수정 2026-10-23 (v1.7)</summary>
+    <summary>변경 내역 — 최종 수정 2026-10-23 (v1.8)</summary>
     <ul>
-      <li class="now"><span class="v">v1.7<span class="d">2026-10-23</span></span><span>짝이 맞지 않는 파일 조합(날짜가 다른 두 파일)을 올리면 경고를 띄웁니다.</span></li>
+      <li class="now"><span class="v">v1.8<span class="d">2026-10-23</span></span><span>단독 html 파일(깃허브 등)로 열면 비교 전에도 요약 타일이 보이던 문제를 고쳤습니다.</span></li>
+      <li><span class="v">v1.7<span class="d">2026-10-23</span></span><span>짝이 맞지 않는 파일 조합(날짜가 다른 두 파일)을 올리면 경고를 띄웁니다.</span></li>
       <li><span class="v">v1.6<span class="d">2026-10-23</span></span><span><b>안쪽막음</b>을 양방향으로 검사합니다(판메움·안바닥 판메움·초메움·안막). 기타설명에서 <b>뜻을 모르는 표기</b>를 찾아 알려주고, 검사한 항목을 결과에 칩으로 표시합니다. <b>용어 설정</b>을 화면에서 직접 고칠 수 있고, 확인 항목에 "확인했음" 체크가 생겼습니다.</span></li>
       <li><span class="v">v1.5<span class="d">2026-10-16</span></span><span>성별 없는 스톤 옵션(메인 스톤 선택)을 남녀 양쪽에 요구하던 오탐을 고쳤습니다. 색상이 "카카오톡 문의"처럼 읽을 수 없는 주문은 불일치가 아니라 확인으로 넘깁니다.</span></li>
       <li><span class="v">v1.4<span class="d">2026-10-16</span></span><span>감정서 기관명 현대·우신·GIA를 천연 다이아 표기로 읽습니다.</span></li>
