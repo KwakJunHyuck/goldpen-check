@@ -168,20 +168,47 @@
   .log .detail{padding:4px 16px 14px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans KR",monospace;font-size:12.5px;white-space:pre-wrap;color:var(--ink-2);border-top:1px dashed var(--line);background:var(--bg)}
   .log .empty{padding:22px 16px}
   @media (max-width:640px){.log .row{grid-template-columns:1fr auto}.log .files{grid-column:1/-1}.log .sum{justify-content:flex-start}}
+  .finish{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px;box-shadow:var(--shadow);font-size:13px;color:var(--ink-2)}
+  .finish.done{border-color:color-mix(in srgb,var(--ok) 45%,transparent);background:var(--ok-soft);color:var(--ok)}
+  .finish #finishNote{flex:1;min-width:220px}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  .btn.primary:hover{color:#fff;filter:brightness(1.08)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .options input[type=text]{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;padding:4px 8px;font:inherit;font-size:13px;width:110px}
+  details.cards{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px;box-shadow:var(--shadow)}
+  details.cards summary{cursor:pointer;font-weight:700;color:var(--ink)}
+  details.cards summary .cnt{font-weight:500;color:var(--ink-3);font-size:12.5px;margin-left:6px}
+  .cardbar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:10px 0;color:var(--ink-3);font-size:12px}
+  .cardlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+  @media (max-width:420px){.cardlist{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:9px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+  .card.doneCard{opacity:.5}
+  .card .top{display:flex;align-items:center;gap:8px;justify-content:space-between}
+  .card .nm{font-weight:700;font-size:15px}
+  .card .phead{font-size:13px;color:var(--ink-2);margin-top:2px}
+  .card .phead .prod{font-weight:700;color:var(--ink)}
+  .card .ln{display:grid;grid-template-columns:34px 1fr;gap:2px 8px;font-size:12.5px;color:var(--ink-2);align-items:start}
+  .card .todo{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+  .card .todo span{font-size:11.5px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+  .card .todo span.hot{background:var(--warn-soft);color:var(--warn);font-weight:700}
+  .card .alert{font-size:12px;color:var(--warn);font-weight:500}
+  .card .memo{font-size:12px;color:var(--ink-3)}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <div class="wrap">
   <header>
     <h1>골드펜 입력 검수</h1>
-    <span class="ver">v1.9 · 2026-10-26</span>
-    <p>플레이오토 발주서와 골드펜 주문리스트를 고객별로 대조해 사이즈·재질·색상·스톤·안쪽막음 입력 실수를 찾습니다. 파일은 이 브라우저 안에서만 처리됩니다.</p>
+    <span class="ver">v2.1 · 2026-11-18</span>
+    <p>플레이오토 발주서와 골드펜 주문리스트를 고객별로 대조해 사이즈·재질·색상·스톤·안쪽막음·가드링 입력 실수를 찾고, 입력 전에 볼 고객별 카드를 만들어 줍니다. 파일은 이 브라우저 안에서만 처리됩니다.</p>
   </header>
 
   <details class="changelog">
-    <summary>변경 내역 — 최종 수정 2026-10-26 (v1.9)</summary>
+    <summary>변경 내역 — 최종 수정 2026-11-18 (v2.1)</summary>
     <ul>
-      <li class="now"><span class="v">v1.9<span class="d">2026-10-26</span></span><span><b>실버(SV925·SILVER) 제품은 기본이 안쪽막음</b>이라, 발주서에 안쪽막음 주문이 없어도 골드펜에 판메움·초메움 표기가 있는 것을 정상으로 봅니다. 기본 안막 판단에 재질과 상품명도 함께 봅니다.</span></li>
+      <li class="now"><span class="v">v2.1<span class="d">2026-11-18</span></span><span><b>입력 카드</b> — 발주서만 올려도 고객별로 흩어진 행을 한 장으로 합쳐, 기타설명에 꼭 적어야 할 것(가드링x·안쪽막음·스톤 등)을 칩으로 보여줍니다. <b>미검사 옵션</b> — 발주서에 검수기가 모르는 옵션이 있으면 조용히 넘기지 않고 확인으로 올립니다. <b>상품별 기본값</b> — "테트라 = 쌍지"처럼 상품마다 기본 쌍지·기본 안막을 기억합니다. <b>검수 완료</b> — 남은 검토가 0건일 때만 검수자 이름으로 완료할 수 있고 기록에 남습니다.</span></li>
+      <li><span class="v">v2.0<span class="d">2026-11-18</span></span><span><b>가드링(쌍지)</b>을 검사합니다. 발주서 "가드링 선택 : 선택 없음"인데 골드펜에 쌍지가 있으면 불일치, "메인링만·가드링x" 표기가 없으면 확인으로 올립니다. 그동안 "쌍지"를 무시할 메모로 분류해 놓쳤던 문제를 고쳤습니다.</span></li>
+      <li><span class="v">v1.9<span class="d">2026-10-26</span></span><span><b>실버(SV925·SILVER) 제품은 기본이 안쪽막음</b>이라, 발주서에 안쪽막음 주문이 없어도 골드펜에 판메움·초메움 표기가 있는 것을 정상으로 봅니다. 기본 안막 판단에 재질과 상품명도 함께 봅니다.</span></li>
       <li><span class="v">v1.8<span class="d">2026-10-23</span></span><span>단독 html 파일(깃허브 등)로 열면 비교 전에도 요약 타일이 보이던 문제를 고쳤습니다.</span></li>
       <li><span class="v">v1.7<span class="d">2026-10-23</span></span><span>짝이 맞지 않는 파일 조합(날짜가 다른 두 파일)을 올리면 경고를 띄웁니다.</span></li>
       <li><span class="v">v1.6<span class="d">2026-10-23</span></span><span><b>안쪽막음</b>을 양방향으로 검사합니다(판메움·안바닥 판메움·초메움·안막). 기타설명에서 <b>뜻을 모르는 표기</b>를 찾아 알려주고, 검사한 항목을 결과에 칩으로 표시합니다. <b>용어 설정</b>을 화면에서 직접 고칠 수 있고, 확인 항목에 "확인했음" 체크가 생겼습니다.</span></li>
@@ -214,17 +241,28 @@
   <div class="options">
     <label><input type="checkbox" id="optSkipX" checked> 골드펜 단계 <b>X</b> 행 제외</label>
     <label><input type="checkbox" id="optSiteFilter" checked> 발주서 판매사이트(예: 메이크샵)와 골드펜 고객명이 같은 행만 비교</label>
+    <label>검수자 <input type="text" id="optReviewer" placeholder="이름" autocomplete="off"></label>
     <span class="grow"></span>
     <button class="btn" id="btnCopy" hidden>결과 텍스트 복사</button>
     <button class="btn" id="btnReset">초기화</button>
   </div>
 
+  <details class="cards" id="cardsPanel" hidden>
+    <summary>입력 카드<span class="cnt" id="cardsCount"></span></summary>
+    <div class="cardbar">
+      <button class="btn" id="btnCopyCards" type="button">카드 전체 복사</button>
+      <span>발주서의 흩어진 행(본 상품·추가 옵션)을 고객별 한 장으로 합쳤습니다. 골드펜에 입력할 때 이 카드를 보며 넣고, 다 넣은 고객은 "입력함"에 체크하세요. 색칠된 칩은 기타설명에 꼭 적어야 하는 것입니다.</span>
+    </div>
+    <div class="cardlist" id="cardList"></div>
+  </details>
+
   <div class="verdict idle" id="verdict">두 파일을 모두 올리면 자동으로 비교가 시작됩니다.</div>
   <div class="msg" id="msg" hidden></div>
+  <div class="finish" id="finishBar" hidden><span id="finishNote"></span><button class="btn primary" id="btnFinish" type="button">검수 완료</button></div>
 
   <div class="tiles" id="tiles" hidden>
     <div class="tile ok" data-st="ok" role="button" tabindex="0" title="클릭하면 일치 항목만 표시"><span class="n" id="nOk">0</span><span class="t">일치</span></div>
-    <div class="tile err" data-st="err" role="button" tabindex="0" title="클릭하면 불일치 항목만 표시"><span class="n" id="nErr">0</span><span class="t">불일치 (사이즈·재질·색상·안쪽막음)</span></div>
+    <div class="tile err" data-st="err" role="button" tabindex="0" title="클릭하면 불일치 항목만 표시"><span class="n" id="nErr">0</span><span class="t">불일치 (사이즈·재질·색상·안쪽막음·가드링)</span></div>
     <div class="tile warn" data-st="warn" role="button" tabindex="0" title="클릭하면 확인 항목만 표시"><span class="n" id="nWarn">0</span><span class="t">확인 (표기·해석 못한 말)</span></div>
     <div class="tile miss" data-st="miss" role="button" tabindex="0" title="클릭하면 누락 항목만 표시"><span class="n" id="nMiss">0</span><span class="t">누락 (골드펜에 없음)</span></div>
     <div class="tile extra" data-st="extra" role="button" tabindex="0" title="클릭하면 추가 항목만 표시"><span class="n" id="nExtra">0</span><span class="t">추가 (발주서에 없음)</span></div>
@@ -264,6 +302,26 @@
         <textarea id="vInlayBase" spellcheck="false"></textarea>
       </div>
       <div class="f">
+        <label>가드링 있음 — 골드펜 표기</label>
+        <span class="hint">메인링+가드링(쌍지)으로 읽는 말입니다. 발주서 "가드링 선택"이 선택 없음인데 이 말이 있으면 불일치입니다.</span>
+        <textarea id="vGuardYes" spellcheck="false"></textarea>
+      </div>
+      <div class="f">
+        <label>가드링 없음 — 골드펜 표기</label>
+        <span class="hint">메인링만 만든다는 뜻으로 읽는 말입니다. 가드링 선택 없음 주문이면 이 중 하나가 있어야 합니다.</span>
+        <textarea id="vGuardNo" spellcheck="false"></textarea>
+      </div>
+      <div class="f">
+        <label>상품별 기본값</label>
+        <span class="hint">한 줄에 하나씩 <b>상품명(또는 모델번호) = 기본값</b>. 쌍지 = 기본으로 가드링 포함, 안막 = 기본 안쪽막음, 단지 = 가드링 표기가 필요 없는 상품. 그 밖의 말은 입력 카드에 메모로 보입니다.</span>
+        <textarea id="vProducts" spellcheck="false" style="min-height:80px"></textarea>
+      </div>
+      <div class="f">
+        <label>검사 안 해도 되는 발주 옵션</label>
+        <span class="hint">발주서 주문선택사항에서 검수기가 모르는 옵션은 "미검사 옵션"으로 올라옵니다. 신경 쓸 필요 없는 옵션 이름을 적어두면 올라오지 않습니다.</span>
+        <textarea id="vOptIgnore" spellcheck="false"></textarea>
+      </div>
+      <div class="f">
         <label>무시할 메모</label>
         <span class="hint">발주서에 근거가 없어도 괜찮은 작업 메모·일정 표기입니다. 여기 없는 말은 "해석 못한 표기"로 올라옵니다.</span>
         <textarea id="vIgnore" spellcheck="false"></textarea>
@@ -281,6 +339,7 @@
     <div class="head">
       <h2>비교 기록</h2>
       <span class="where" id="logWhere">기록 불러오는 중…</span>
+      <span class="where" id="logToday" style="color:var(--warn);font-weight:700"></span>
       <span class="grow" style="flex:1"></span>
       <button class="btn" id="btnClearLog" type="button" hidden>기록 전체 삭제</button>
     </div>
@@ -292,6 +351,10 @@
     <p>발주서의 <b>수령자명</b>과 골드펜의 <b>실고객명</b>으로 사람을 맞춘 뒤, 주문선택사항을 남자/여자 조각으로 나눠 골드펜 행과 짝을 짓습니다(모델번호의 남/여·대/소·RL/RS와 사이즈로 판단). 검사 결과에는 <b>무엇을 검사했는지</b>가 항목별로 표시됩니다 — 칩이 없는 항목은 검사하지 않은 것입니다.</p>
     <p><b>사이즈</b>(17.5호 ↔ 17.5), <b>재질</b>(14K/18K, SILVER ↔ SV925), <b>색상</b>(화이트→WG·무도금W, 옐로우→YG, 로즈→PG, 화이트&amp;로즈→W/P, 리얼실버→빈칸)이 다르면 <b>불일치</b>입니다. 색상 옵션이 "카카오톡 문의"처럼 자동으로 읽을 수 없는 주문이면 <b>확인</b>으로 넘깁니다.</p>
     <p><b>안쪽막음</b>은 양방향으로 봅니다. 골드펜에 판메움·안바닥 판메움·초메움 같은 표기가 있는데 발주서에 안쪽막음 주문이 없으면 <b>불일치</b>(주문에 없는 작업이 들어간 경우). 반대로 발주서가 안쪽막음인데 골드펜에 표기가 없으면 제품 자체가 기본 안막일 수 있어 <b>확인</b>으로 올리고, 그 제품이 기본 안막이면 버튼 한 번으로 용어 설정에 등록해 다음부터 넘어가게 할 수 있습니다. <b>실버(SV925) 제품은 기본이 안쪽막음</b>이라 발주서에 없어도 표기가 있는 것을 정상으로 봅니다.</p>
+    <p><b>가드링</b>은 발주서 "가드링 선택" 옵션을 봅니다. <b>선택 없음</b>인데 골드펜에 "쌍지"가 있으면 <b>불일치</b>, "메인링만·가드링x" 표기가 어느 행에도 없으면 <b>확인</b>입니다. 가드링을 <b>선택</b>했는데 "가드링x"로 들어가면 불일치, "쌍지" 표기가 없으면 확인입니다. 발주서에 가드링 옵션이 없는 상품은 검사하지 않습니다.</p>
+    <p><b>미검사 옵션</b> — 발주서 주문선택사항에서 검수기가 모르는 옵션(사이즈·색상·재질·스톤·광·길이·가드링 외)은 확인으로 올라옵니다. 지금까지 놓친 건(천연/랩, 안쪽막음, 가드링)이 모두 "검수기가 모르는 옵션을 조용히 넘긴" 경우였기 때문입니다. 신경 쓸 필요 없는 옵션이면 버튼으로 등록하세요.</p>
+    <p><b>상품별 기본값</b> — 용어 설정에 "상품명 = 쌍지, 안막, 단지"를 적어두면, 기본 쌍지 상품에서 가드링 없는 주문인데 "메인링만·가드링x"가 없으면 불일치로, 기본 안막 상품은 안쪽막음 표기가 없어도 통과로 봅니다.</p>
+    <p><b>검수 완료</b> — 불일치·확인·누락·추가를 하나씩 "확인했음" 처리해 남은 검토가 0건이 되어야 완료 버튼이 켜집니다. 완료하면 검수자 이름과 시각이 비교 기록에 남고, 오늘 미완료 건수가 기록 머리에 표시됩니다. 완료 전에는 골드펜 단계를 넘기지 않는 것을 규칙으로 삼으시길 권합니다.</p>
     <p><b>스톤</b>은 <b>천연 ↔ 랩그로운</b>이 뒤바뀌면 <b>불일치</b>(기타설명의 "천연"과 감정서 기관명 "현대"·"우신"·"GIA"를 천연으로, "랩"을 랩으로 읽습니다). 부수(1부/2부/3부)나 SV 랩·도금·유광 표기가 없으면 <b>확인</b>입니다. 성별이 붙은 옵션(남자 메인 스톤)은 그 반지에서, 성별 없는 옵션(메인 스톤 선택)은 같은 고객의 아무 행에서나 찾습니다.</p>
     <p>골드펜 기타설명은 슬래시·쉼표로 쪼개어 조각마다 뜻을 찾습니다. <b>용어 설정에 없는 말</b>은 "해석 못한 표기"로 <b>확인</b>에 올라옵니다 — 검수가 모르고 지나친 작업을 눈에 보이게 하려는 장치입니다. 작업 메모라면 용어 설정의 "무시할 메모"에 추가하세요.</p>
   </details>
@@ -338,13 +401,21 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     inlayGold:['판메움','안바닥 판메움','안바닥판메움','안바닥메움','초메움','안쪽막음','안쪽 막음','안막'],
     inlayEmp:['안쪽막음','안쪽 막음','안막'],
     inlayBase:['기본안막','기본 안막','SV925','SILVER','실버'],
-    ignore:['급자','초급','매장걸로','매장 걸로','모노','보류','쌍지','메인링','가드링','더큼','더 큼','채운하트','빈하트','판메움x','출고','도착','까지','부탁','문자','전화','이니셜','서체','생년월일','웨딩','붙임제작','라운드','프린세스','투명','측면','큐빅']
+    guardYes:['쌍지','가드링포함','가드링 포함','메인링+가드링'],
+    guardNo:['메인링만','메인링 만','가드링x','가드링 x','가드링없음','가드링 없음','가드링제외','가드링 제외','가드x','가드 x'],
+    optIgnore:[],
+    products:['테트라 = 쌍지'],
+    ignore:['급자','초급','매장걸로','매장 걸로','모노','보류','더큼','더 큼','채운하트','빈하트','판메움x','출고','도착','까지','부탁','문자','전화','이니셜','서체','생년월일','웨딩','붙임제작','라운드','프린세스','투명','측면','큐빅']
   };
-  const VOCAB_FIELDS=[['inlayGold','vInlayGold'],['inlayEmp','vInlayEmp'],['inlayBase','vInlayBase'],['ignore','vIgnore']];
+  const VOCAB_FIELDS=[['inlayGold','vInlayGold'],['inlayEmp','vInlayEmp'],['inlayBase','vInlayBase'],['guardYes','vGuardYes'],['guardNo','vGuardNo'],['products','vProducts'],['optIgnore','vOptIgnore'],['ignore','vIgnore']];
+  // 예전에 저장된 설정에서 가드링 관련 말을 무시 목록에서 빼낸다(v2.0 이전엔 쌍지를 메모로 취급했음)
+  const NOT_MEMO=['쌍지','메인링','가드링'];
+  function normalizeVocab(){ VOCAB.ignore=(VOCAB.ignore||[]).filter(w=>!NOT_MEMO.includes(w)); ['guardYes','guardNo'].forEach(k=>{ if(!VOCAB[k]||!VOCAB[k].length) VOCAB[k]=VOCAB_DEFAULT[k].slice(); }); ['optIgnore','products'].forEach(k=>{ if(!Array.isArray(VOCAB[k])) VOCAB[k]=VOCAB_DEFAULT[k].slice(); }); }
   let VOCAB=JSON.parse(JSON.stringify(VOCAB_DEFAULT));
   const splitList=s=>String(s||'').split(/[,\n]/).map(x=>x.trim()).filter(Boolean);
-  function vocabToForm(){ VOCAB_FIELDS.forEach(([k,id])=>{$(id).value=(VOCAB[k]||[]).join(', ');}); }
-  function vocabFromForm(){ VOCAB_FIELDS.forEach(([k,id])=>{VOCAB[k]=splitList($(id).value);}); }
+  // 상품별 기본값은 한 줄에 하나(줄 안에 쉼표가 들어감), 나머지는 쉼표 구분
+  function vocabToForm(){ VOCAB_FIELDS.forEach(([k,id])=>{$(id).value=(VOCAB[k]||[]).join(k==='products'?'\n':', ');}); }
+  function vocabFromForm(){ VOCAB_FIELDS.forEach(([k,id])=>{VOCAB[k]= k==='products'? String($(id).value||'').split(/\n/).map(x=>x.trim()).filter(Boolean) : splitList($(id).value);}); }
   function vocabLoadLocal(){ try{const s=JSON.parse(localStorage.getItem('gp-check-vocab')||'null'); if(s) VOCAB=Object.assign(JSON.parse(JSON.stringify(VOCAB_DEFAULT)),s);}catch(e){} }
   function vocabSaveLocal(){ try{localStorage.setItem('gp-check-vocab',JSON.stringify(VOCAB));}catch(e){} }
   async function vocabSave(){
@@ -352,7 +423,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     const db=await getDb();
     if(db&&dbRef){ try{ await db.doc('config/vocab').set({v:VOCAB,ts:new Date().toISOString()}); }catch(e){} }
   }
-  vocabLoadLocal(); vocabToForm();
+  vocabLoadLocal(); normalizeVocab(); vocabToForm();
 
   // ---------- file reading (binary xls/xlsx and HTML-table .xls)
   function isHtml(buf){
@@ -475,7 +546,41 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   const inlayInGold=r=>hit(VOCAB.inlayGold,r['기타설명']);
   // 제품 자체가 안쪽막음인 경우 — 제조번호 "기본안막", 그리고 실버(SV925)처럼 기본이 안쪽막음인 재질
   const inlayIsBase=(r,p)=>hit(VOCAB.inlayBase,
-    [r['제조번호'],r['모델번호'],r['제조사'],r['재질'],p&&p.prod,p&&p.material].filter(Boolean).join(' '));
+    [r['제조번호'],r['모델번호'],r['제조사'],r['재질'],p&&p.prod,p&&p.material].filter(Boolean).join(' '))||!!(p&&defaultsFor(p.prod,r).inlay);
+
+  // ---- 상품별 기본값: "테트라 = 쌍지" 같은 줄을 읽어 상품명·모델번호로 찾는다
+  function coreName(prod){ return norm(String(prod||'').replace(/\[[^\]]*\]/g,' ').replace(/925\s*silver/i,' ')); }
+  function prodDefaults(){
+    return (VOCAB.products||[]).map(line=>{ const i=String(line).indexOf('='); if(i<0) return null;
+      const key=line.slice(0,i).trim(); if(!key) return null;
+      const flags=line.slice(i+1).split(/[,/]/).map(x=>x.trim()).filter(Boolean);
+      return {key,flags,guard:flags.some(f=>/쌍지/.test(f)),single:flags.some(f=>/단지/.test(f)),inlay:flags.some(f=>/안막|안쪽막음/.test(f)),
+        memo:flags.filter(f=>!/쌍지|단지|안막|안쪽막음/.test(f))}; }).filter(Boolean);
+  }
+  function defaultsFor(prod,r){
+    const hay=compact([coreName(prod),r&&r['모델번호'],r&&r['제조번호']].filter(Boolean).join(' '));
+    const out={guard:false,single:false,inlay:false,memo:[],keys:[]};
+    prodDefaults().forEach(d=>{ const k=compact(d.key); if(k.length>=2&&hay.includes(k)){ if(d.guard) out.guard=true; if(d.single) out.single=true; if(d.inlay) out.inlay=true; out.memo.push(...d.memo); out.keys.push(d.key); } });
+    return out;
+  }
+  function addProductDefault(line){
+    const i=line.indexOf('='); if(i<0) return;
+    const key=line.slice(0,i).trim(), flags=line.slice(i+1).split(/[,/]/).map(x=>x.trim()).filter(Boolean);
+    const list=VOCAB.products||(VOCAB.products=[]);
+    const at=list.findIndex(l=>compact(String(l).split('=')[0])===compact(key));
+    if(at<0){ list.push(key+' = '+flags.join(', ')); return; }
+    const old=String(list[at]).split('=').slice(1).join('=').split(/[,/]/).map(x=>x.trim()).filter(Boolean);
+    list[at]=key+' = '+[...new Set([...old,...flags])].join(', ');
+  }
+
+  // ---- 가드링(쌍지): 발주서 "가드링 선택" 옵션 ↔ 골드펜 쌍지 / 메인링만·가드링x
+  const guardNoIn=t=>hit(VOCAB.guardNo,t);
+  const guardYesIn=t=>!guardNoIn(t)&&hit(VOCAB.guardYes,t);
+  function guardFromOption(v){
+    const t=String(v||'').trim(); if(!t) return null;
+    if(/선택\s*(없음|안\s*함)|미선택|없음|안\s*함|X$/i.test(t)) return 'no';
+    return 'yes';
+  }
 
   // ---- 기타설명 조각 분류: 모르는 말을 눈에 보이게 하는 장치
   function fragments(etc){
@@ -489,14 +594,18 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if(/도금/.test(f)) return true;
     if(/유광|무광/.test(f)) return true;
     if(hit(VOCAB.inlayGold,f)||hit(VOCAB.inlayBase,f)) return true;
+    if(hit(VOCAB.guardYes,f)||hit(VOCAB.guardNo,f)) return true;
     if(hit(VOCAB.ignore,f)) return true;
     return false;
   }
 
+  // 검수기가 검사하는 발주 옵션 이름
+  const KNOWN_OPT=/사이즈|색상|컬러|상품\s*선택|상품선택|타입|재질|스톤|광\s*선택|광택|길이|가드\s*링/;
+
   // ---------- EMP → expected pieces per customer
   function buildExpected(emp){
     const cust=new Map();
-    const get=n=>{if(!cust.has(n)) cust.set(n,{name:n,items:[],pieces:[],stones:{남:[],여:[],공용:[]},finish:{},sites:new Set()}); return cust.get(n);};
+    const get=n=>{if(!cust.has(n)) cust.set(n,{name:n,items:[],pieces:[],stones:{남:[],여:[],공용:[]},finish:{},sites:new Set(),unknownOpts:[]}); return cust.get(n);};
     const sites=new Set();
     emp.rows.forEach(r=>{
       const name=norm(r['수령자명']); if(!name) return;
@@ -505,14 +614,18 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       const qty=Math.max(1,num(r['주문수량'])||1);
       const price=num(r['판매가']);
       const isAddon=/추가\s*옵션/.test(prod)||(price===0&&opts.every(o=>/스톤/.test(o.k)));
+      // 검수기가 아는 옵션인지 — 모르는 옵션은 조용히 버리지 않고 "미검사 옵션"으로 올린다
+      if(optRaw&&optRaw.toLowerCase()!=='nan'&&!opts.length) c.unknownOpts.push({k:'(형식을 읽지 못한 옵션)',v:optRaw,prod});
+      opts.forEach(o=>{ if(!KNOWN_OPT.test(o.k)&&!hit(VOCAB.optIgnore,o.k)) c.unknownOpts.push({k:o.k,v:o.v,prod}); });
       opts.forEach(o=>{
         const g=genderOfKey(o.k);
         if(/스톤/.test(o.k)){ const toks=stoneTokens(o.v), type=stoneType(o.v); if(toks.length||type){ const both=/1\s*\+\s*1/.test(o.v); c.stones[g].push({toks,type,raw:o.v,both,prod}); } }
         if(/광\s*선택|광택/.test(o.k)&&/유광|무광/.test(o.v)){ c.finish[g]=(o.v.match(/유광|무광/)||[])[0]; }
       });
       if(isAddon){ c.items.push({prod,addon:true,row:r}); return; }
-      const sizes={}, colors={}, mats={}, lengths={};
+      const sizes={}, colors={}, mats={}, lengths={}; let guard=null, guardRaw='';
       opts.forEach(o=>{
+        if(/가드\s*링|가드링/.test(o.k)){ guard=guardFromOption(o.v); guardRaw=o.k+' : '+o.v; return; }
         const g=genderOfKey(o.k);
         if(/사이즈/.test(o.k)&&!/측정/.test(o.k)){ const n=num(o.v); if(n!==null) sizes[g]=n; }
         else if(/길이/.test(o.k)){ lengths[g]=o.v; }
@@ -525,7 +638,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       if(!genders.length){ c.items.push({prod,skip:true,row:r,reason:opts.length?'사이즈·길이 옵션 없음':'주문선택사항 없음'}); return; }
       c.items.push({prod,row:r});
       for(let q=0;q<qty;q++) genders.forEach(g=>{
-        c.pieces.push({cust:name,prod,gender:g,size:sizes[g]??null,length:lengths[g]??null,inlay,
+        c.pieces.push({cust:name,prod,gender:g,size:sizes[g]??null,length:lengths[g]??null,inlay,guard,guardRaw,
           material:mats[g]||mats['공용']||baseMat||'',color:colorFromKorean(colors[g]||colors['공용']||''),
           colorRaw:colors[g]||colors['공용']||'',matched:null});
       });
@@ -598,11 +711,38 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       if(gold||base) mark('안쪽막음',true);
       else { issues.push({level:'warn',k:'안쪽막음',from:'발주: 안쪽막음',to:r['기타설명']||'(빈칸)',
         note:'골드펜에 안쪽막음 표기가 없습니다 — 제품 자체가 기본 안막이면 아래 버튼으로 등록하세요',
-        fix:{type:'base',val:norm(r['제조번호'])||norm(r['모델번호'])}}); mark('안쪽막음',false); }
+        fix:{type:'prod',val:coreName(p.prod)+' = 안막',label:'기본 안막 상품으로 등록'}}); mark('안쪽막음',false); }
     }else{
       if(gold&&!base){ issues.push({level:'err',k:'안쪽막음',from:'발주: 안쪽막음 아님',to:r['기타설명']||'(빈칸)',
         note:'발주서에 없는 안쪽막음 작업이 골드펜에 들어갔습니다'}); mark('안쪽막음',false); }
       else mark('안쪽막음',true);   // 실버 등 기본이 안쪽막음인 제품은 표기가 있어도 정상
+    }
+
+    // 가드링 — 주문 하나에 한 번만 들어가므로 같은 고객의 모든 행을 함께 본다
+    const dflt=defaultsFor(p.prod,r);
+    const gExp=p.guard||(dflt.guard?'default':null);   // 옵션이 없어도 기본 쌍지 상품이면 쌍지로 본다
+    if(gExp){
+      const rowYes=guardYesIn(r['기타설명']), rowNo=guardNoIn(r['기타설명']);
+      const allRawG=sib?sib.raw:(r['기타설명']||'');
+      const anyYes=sib?sib.guardYes:rowYes, anyNo=sib?sib.guardNo:rowNo;
+      const host=!sib||sib.guardHost===(p.gender+'|'+(r['접수번호']||''));
+      const from=p.guardRaw||'기본 쌍지 상품 (가드링 옵션 없음)';
+      let ok=true;
+      if(p.guard==='no'&&rowYes){ ok=false; issues.push({level:'err',k:'가드링',from,to:r['기타설명']||'(빈칸)',
+        note:'가드링 없는 주문인데 쌍지(메인링+가드링)로 입력됨 — "메인링만, 가드링x"로 적어야 합니다'}); }
+      else if(p.guard==='yes'&&rowNo){ ok=false; issues.push({level:'err',k:'가드링',from,to:r['기타설명']||'(빈칸)',
+        note:'가드링을 선택한 주문인데 가드링x·메인링만으로 입력됨'}); }
+      else if(gExp==='default'&&rowNo){ ok=false; issues.push({level:'err',k:'가드링',from,to:r['기타설명']||'(빈칸)',
+        note:'기본 쌍지 상품이고 발주서에 가드링을 빼는 옵션이 없는데 가드링x·메인링만으로 입력됨'}); }
+      else if(host&&p.guard==='no'&&!anyNo&&!anyYes&&!dflt.single){ ok=false;
+        if(dflt.guard) issues.push({level:'err',k:'가드링',from,to:allRawG||'(빈칸)',
+          note:'기본 쌍지 상품이라 가드링 없는 주문이면 반드시 "메인링만·가드링x"를 적어야 합니다'});
+        else issues.push({level:'warn',k:'가드링',from,to:allRawG||'(빈칸)',
+          note:'"메인링만·가드링x" 표기가 이 고객의 어느 행에도 없습니다 — 기본이 쌍지인 상품이면 꼭 적어야 합니다',
+          fix:{type:'prod',val:coreName(p.prod)+' = 단지',label:'가드링 표기 필요 없는 상품으로 등록'}}); }
+      else if(host&&p.guard==='yes'&&!anyYes){ ok=false; issues.push({level:'warn',k:'가드링',from,to:allRawG||'(빈칸)',
+        note:'가드링을 선택했는데 "쌍지" 표기가 이 고객의 어느 행에도 없습니다'}); }
+      mark('가드링',ok);
     }
 
     // 스톤
@@ -662,8 +802,17 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       if(!cu.pieces.length){ rowsFor.forEach(r=>{out.push({st:'extra',cust:name,r}); c.extra++;}); continue; }
       const {pairs,missing,extra}=matchCustomer(cu,rowsFor);
       const sib={raw:pairs.map(({r})=>r['기타설명']||'').filter(Boolean).join(' / ')};
-      pairs.forEach(({p,r})=>{
+      sib.guardYes=pairs.some(({r})=>guardYesIn(r['기타설명'])); sib.guardNo=pairs.some(({r})=>guardNoIn(r['기타설명']));
+      { const gp=pairs.filter(({p,r})=>p.guard||defaultsFor(p.prod,r).guard); const h=gp.find(({p})=>p.gender==='여')||gp[0]; if(h) sib.guardHost=h.p.gender+'|'+(h.r['접수번호']||''); }
+      pairs.forEach(({p,r},pi)=>{
         const {issues,checks}=checkPair(p,r,cu,sib);
+        if(pi===0&&cu.unknownOpts.length){
+          const keys=[...new Set(cu.unknownOpts.map(o=>o.k.replace(/^(남자|여자|남|여)\s*/,'').trim()))].filter(k=>!/^\(/.test(k));
+          issues.push({level:'warn',k:'미검사 옵션',from:cu.unknownOpts.map(o=>o.k+' : '+o.v).join(' / '),to:'(검사 규칙 없음)',
+            note:'검수기가 검사하지 않는 옵션입니다 — 골드펜 입력을 직접 확인하세요. 신경 쓸 필요 없는 옵션이면 등록하세요',
+            fix:keys.length?{type:'optIgnore',val:keys.join(', '),label:'검사 안 해도 되는 옵션으로 등록'}:null});
+          checks.push({k:'옵션',ok:false});
+        }
         const st=issues.some(i=>i.level==='err')?'err':issues.length?'warn':'ok'; c[st]++;
         out.push({st,cust:name,p,r,issues,checks,stones:cu.stones,key:name+'|'+p.gender+'|'+(r['접수번호']||'')});
       });
@@ -707,7 +856,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       else if(A.kind==='gold'&&B.kind==='gold') state.result=compareGold(A,B);
       else throw new Error('발주서 파일 두 개가 올라왔습니다. 오른쪽에는 골드펜 주문리스트를 올려주세요.');
       setMsg(''); state.filter=null;
-      if(opts&&opts.fresh){ state.ack=new Set(); state.logId=null; }
+      if(opts&&opts.fresh){ state.ack=new Set(); state.logId=null; state.logTs=null; state.done=null; $('cardsPanel').open=false; }
       render();
       if(opts&&opts.log) logResult();
     }catch(e){ setMsg(e.message||String(e)); }
@@ -723,6 +872,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     if(p.length) bits.push(`<b>${esc(p.length)}</b>`);
     if(p.colorRaw) bits.push(esc(p.colorRaw));
     if(p.inlay) bits.push('<b>안쪽막음</b>');
+    if(p.guard==='no') bits.push('<b>가드링 없음</b>'); else if(p.guard==='yes') bits.push('<b>가드링 선택</b>');
     return `<div class="spec"><span class="g">${esc(p.gender)}</span>${bits.join('<span class="dim">·</span>')}</div><div class="spec dim" style="font-size:12px">${esc(p.prod)}</div>`;
   }
   function stonesHtml(stones,gender){
@@ -753,7 +903,8 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     const cov=x.gold?'':covHtml(x.checks);
     if(!x.issues||!x.issues.length) return cov;
     const list=`<div class="issues">${x.issues.map(i=>{
-      const fix=i.fix?`<button class="fix" data-fix="${esc(i.fix.type)}" data-val="${esc(i.fix.val)}">${i.fix.type==='base'?'기본 안막 제품으로 등록':'무시할 메모로 등록'}</button>`:'';
+      const FIXL={base:'기본 안막 제품으로 등록',ignore:'무시할 메모로 등록',optIgnore:'검사 안 해도 되는 옵션으로 등록',prod:'상품 기본값으로 등록'};
+      const fix=i.fix?`<button class="fix" data-fix="${esc(i.fix.type)}" data-val="${esc(i.fix.val)}">${esc(i.fix.label||FIXL[i.fix.type]||'등록')}</button>`:'';
       return `<div class="iss ${i.level}"><span class="k">${esc(i.k)}</span><span class="v old">${esc(i.from)}</span><span class="arrow">→</span><span class="v new">${esc(i.to)}</span>${i.note?`<span class="note">${esc(i.note)}</span>`:''}${fix}</div>`;
     }).join('')}</div>`;
     const ack=`<label class="ackbox"><input type="checkbox" data-ack="${esc(x.key||('i'+idx))}" ${state.ack.has(x.key||('i'+idx))?'checked':''}> 확인했음</label>`;
@@ -765,7 +916,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     const pending=R.out.filter(x=>(x.st==='err'||x.st==='warn'||x.st==='miss'||x.st==='extra')&&!state.ack.has(x.key)).length;
     const v=$('verdict');
     if(errs+c.warn===0){ v.className='verdict ok'; v.innerHTML=`✓ 모두 일치합니다 <small>· ${c.ok}건 검사${c.skip?` · ${c.skip}건 제외`:''}</small>`; }
-    else if(pending===0){ v.className='verdict ok'; v.innerHTML=`✓ 검토 완료 <small>· 지적 ${errs+c.warn}건을 모두 확인 처리했습니다</small>`; }
+    else if(pending===0){ v.className='verdict ok'; v.innerHTML=`✓ 지적 항목을 모두 확인했습니다 <small>· ${errs+c.warn}건 확인 처리</small>`; }
     else { v.className='verdict '+(errs?'err':'warn');
       v.innerHTML= errs ? `⚠ 수정이 필요한 항목 ${errs}건 <small>· 불일치 ${c.err} · 누락 ${c.miss} · 추가 ${c.extra}${c.warn?` · 확인 ${c.warn}`:''} · 남은 검토 ${pending}건</small>`
         : `△ 값은 모두 일치, 확인할 항목 ${c.warn}건 <small>· 남은 검토 ${pending}건</small>`; }
@@ -774,6 +925,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       v.className='verdict err';
       v.innerHTML=`⚠ 두 파일이 서로 짝이 맞지 않는 것 같습니다 <small>· 짝지어진 건이 하나도 없습니다 (발주서 ${c.miss}건 전부 누락, 골드펜 ${c.extra}행 전부 추가). 발주서를 골드펜에 입력한 뒤 주문리스트를 다시 내려받아 올려보세요.</small>`;
     }
+    renderFinish();
     $('nOk').textContent=c.ok;$('nErr').textContent=c.err;$('nWarn').textContent=c.warn;$('nMiss').textContent=c.miss;$('nExtra').textContent=c.extra;$('nSkip').textContent=c.skip;
     $('tiles').hidden=false;$('results').hidden=false;$('btnCopy').hidden=false;$('colInfo').textContent=R.info;
     document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('active',t.dataset.st===state.filter));
@@ -797,10 +949,10 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   $('tbody').addEventListener('click',async e=>{
     const fix=e.target.closest('[data-fix]');
     if(fix){
-      const key= fix.dataset.fix==='base'?'inlayBase':'ignore';
-      const vals=splitList(fix.dataset.val);
-      VOCAB[key]=[...new Set([...(VOCAB[key]||[]),...vals])];
-      vocabToForm(); await vocabSave(); compare();
+      const t=fix.dataset.fix, val=fix.dataset.val;
+      if(t==='prod') addProductDefault(val);
+      else { const key={base:'inlayBase',ignore:'ignore',optIgnore:'optIgnore'}[t]; VOCAB[key]=[...new Set([...(VOCAB[key]||[]),...splitList(val)])]; }
+      vocabToForm(); await vocabSave(); compare(); renderCards();
       return;
     }
   });
@@ -823,7 +975,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   }
   function copyText(){
     const R=state.result; if(!R) return;
-    const lines=[`골드펜 입력 검수 — ${summaryLine(R.c)}`,...issueLines(R)];
+    const lines=[`골드펜 입력 검수 — ${summaryLine(R.c)}`+(state.done?` — 검수 완료 ${state.done.by} ${fmtWhen(state.done.at)}`:' — 검수 미완료'),...issueLines(R)];
     navigator.clipboard.writeText(lines.join('\n')).then(()=>{const b=$('btnCopy');b.textContent='복사됨';setTimeout(()=>b.textContent='결과 텍스트 복사',1500);}).catch(()=>{});
   }
 
@@ -845,7 +997,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       $('vocabWhere').textContent='용어 설정도 모든 PC에서 공유됩니다';
       try{
         const snap=await db.doc('config/vocab').get();
-        if(snap.exists&&snap.data()&&snap.data().v){ VOCAB=Object.assign(JSON.parse(JSON.stringify(VOCAB_DEFAULT)),snap.data().v); vocabToForm(); vocabSaveLocal(); if(state.result) compare(); }
+        if(snap.exists&&snap.data()&&snap.data().v){ VOCAB=Object.assign(JSON.parse(JSON.stringify(VOCAB_DEFAULT)),snap.data().v); normalizeVocab(); vocabToForm(); vocabSaveLocal(); if(state.result) compare(); renderCards(); }
       }catch(e){}
       try{
         db.collection('logs').orderBy('ts','desc').limit(LOG_MAX).onSnapshot(snap=>{
@@ -860,14 +1012,16 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   }
   function logPayload(){
     const R=state.result;
-    return {ts:new Date().toISOString(),fileA:state.fileA,fileB:state.fileB,mode:R.mode,c:R.c,info:R.info,
-      acked:state.ack.size,lines:issueLines(R).slice(0,300)};
+    return {ts:state.logTs||new Date().toISOString(),fileA:state.fileA,fileB:state.fileB,mode:R.mode,c:R.c,info:R.info,
+      acked:state.ack.size,done:!!state.done,doneAt:state.done?state.done.at:null,doneBy:state.done?state.done.by:null,
+      lines:issueLines(R).slice(0,300)};
   }
   async function logResult(){
     const R=state.result; if(!R) return;
     const lines=issueLines(R);
     const sig=[state.fileA,state.fileB,summaryLine(R.c),lines.join('\n')].join('|');
     if(sig===state.loggedSig) return; state.loggedSig=sig;
+    state.logTs=new Date().toISOString();
     const entry=logPayload();
     const db=await getDb();
     if(db&&dbRef){
@@ -903,14 +1057,17 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   }
   function renderLog(){
     const ul=$('logList'); $('btnClearLog').hidden=!logEntries.length;
+    { const today=fmtWhen(new Date().toISOString()).slice(0,10); const und=logEntries.filter(e=>fmtWhen(e.ts).slice(0,10)===today&&!e.done).length;
+      $('logToday').textContent= und?`오늘 검수 미완료 ${und}건`:''; }
     if(!logEntries.length){ ul.innerHTML=`<li class="empty" style="color:var(--ink-3)">아직 비교 기록이 없습니다. 비교를 실행하면 자동으로 남습니다.</li>`; return; }
     ul.innerHTML=logEntries.map(e=>{
       const c=e.c||{}; const bad=(c.err||0)+(c.miss||0)+(c.extra||0);
       const pills=[bad?`<span class="pill err">수정 ${bad}</span>`:'',c.warn?`<span class="pill warn">확인 ${c.warn}</span>`:'',
         e.acked?`<span class="pill skip">확인함 ${e.acked}</span>`:'',
-        `<span class="pill ok">일치 ${c.ok||0}</span>`,(!bad&&!c.warn)?`<span class="pill ok">✓ 완료</span>`:''].join('');
+        `<span class="pill ok">일치 ${c.ok||0}</span>`,
+        e.done?`<span class="pill ok">✓ 검수 완료${e.doneBy?' · '+esc(e.doneBy):''}</span>`:`<span class="pill warn">미완료</span>`].join('');
       const open=logOpen===e.id;
-      const detail=open?`<div class="detail">${esc(summaryLine(c))}${e.info?'\n'+esc(e.info):''}${(e.lines&&e.lines.length)?'\n\n'+e.lines.map(esc).join('\n'):'\n\n지적사항 없음 — 모두 일치'}</div>`:'';
+      const detail=open?`<div class="detail">${e.done?esc('검수 완료: '+(e.doneBy||'')+' · '+fmtWhen(e.doneAt||e.ts))+'\n':'검수 미완료\n'}${esc(summaryLine(c))}${e.info?'\n'+esc(e.info):''}${(e.lines&&e.lines.length)?'\n\n'+e.lines.map(esc).join('\n'):'\n\n지적사항 없음 — 모두 일치'}</div>`:'';
       return `<li><div class="row" data-id="${esc(e.id)}"><span class="when">${esc(fmtWhen(e.ts))}</span><span class="files">${esc(e.fileA||'')} ↔ ${esc(e.fileB||'')}</span><span class="sum">${pills}</span><button class="del" data-del="${esc(e.id)}" title="이 기록 삭제">삭제</button></div>${detail}</li>`;
     }).join('');
   }
@@ -921,16 +1078,111 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   $('btnClearLog').addEventListener('click',()=>{ const b=$('btnClearLog'); if(arm('clear',b,'다시 누르면 전체 삭제')){armed=null;b.textContent='기록 전체 삭제';clearLog();} });
   setTimeout(initLog,300);
 
+  // ---------- 입력 카드: 발주서를 고객별 한 장으로 — 입력하기 전에 보고 넣는 용도
+  const cardDone=new Set();
+  function empData(){ return state.A&&state.A.kind==='emp'?state.A:(state.B&&state.B.kind==='emp'?state.B:null); }
+  function cardStoreKey(){ const e=empData(); return 'gp-cards-'+(e===state.A?state.fileA:state.fileB); }
+  function stoneLabel(s){
+    const t=s.raw+' '+(s.prod||'');
+    const car=(s.raw.match(/(\d)\s*부/)||[])[1], sv=/SV/i.test(s.raw), lab=(s.raw.match(LABS)||[])[0];
+    let out=car?car+'부 ':(sv?'SV':'');
+    out+= s.type==='천연'?'천연':(s.type==='랩'?'랩':'다이아');
+    if(s.type==='천연'&&lab) out+='('+lab+')';
+    if(/프린세스|프린/.test(t)) out+='(프린)';
+    return out.trim();
+  }
+  function cardFor(cu,emp){
+    const rows=emp.rows.filter(r=>norm(r['수령자명'])===cu.name);
+    const msgs=[...new Set(rows.map(r=>norm(r['배송메세지'])).filter(m=>m&&m.toLowerCase()!=='nan'))];
+    const byProd=new Map(); cu.pieces.forEach(p=>{ if(!byProd.has(p.prod)) byProd.set(p.prod,[]); byProd.get(p.prod).push(p); });
+    const parts=[], texts=[cu.name];
+    byProd.forEach((ps,prod)=>{
+      const p0=ps[0], d=defaultsFor(prod,null), silver=p0.material==='SV925';
+      const flags=[]; if(d.guard) flags.push('기본 쌍지'); if(d.single) flags.push('단지'); if(d.inlay) flags.push('기본 안막'); flags.push(...d.memo);
+      const lines=[], tlines=[];
+      const guardHost=ps.find(p=>p.gender==='여')||ps[0];
+      ps.forEach(p=>{
+        const todo=[];
+        if(p.inlay&&!silver&&!d.inlay) todo.push({t:'안쪽막음',note:'제조번호가 기본안막인 제품이면 생략해도 됩니다'});
+        if(p===guardHost){
+          if(p.guard==='no'&&!d.single) todo.push({t:'메인링만·가드링x',hot:true});
+          else if(p.guard==='yes') todo.push({t:'쌍지',hot:true});
+        }
+        const own=[...(cu.stones[p.gender]||[]),...(p.gender!=='공용'?(cu.stones[p.gender==='남'?'여':'남']||[]).filter(s=>s.both):[])];
+        own.forEach(s=>todo.push({t:stoneLabel(s),hot:s.type==='천연'}));
+        if(silver){ if(p.color.real) todo.push({t:'도금x 리얼실버'}); else if(p.color.plated) todo.push({t:'도금'}); }
+        const fin=cu.finish[p.gender]||cu.finish['공용']; if(fin) todo.push({t:fin});
+        const spec=[p.size!==null?p.size+'호':'',p.length||'',p.colorRaw].filter(Boolean).join(' · ');
+        lines.push(`<div class="ln"><span class="g">${esc(p.gender)}</span><div>${esc(spec)}${todo.length?`<div class="todo">${todo.map(x=>`<span class="${x.hot?'hot':''}"${x.note?` title="${esc(x.note)}"`:''}>${esc(x.t)}${x.note?' *':''}</span>`).join('')}</div>`:''}</div></div>`);
+        tlines.push(`  ${p.gender} ${spec}${todo.length?' | 기타설명: '+todo.map(x=>x.t).join(', '):''}`);
+      });
+      const shared=cu.stones['공용']||[];
+      if(shared.length){
+        lines.push(`<div class="ln"><span class="g">공용</span><div><div class="todo">${shared.map(s=>`<span class="${s.type==='천연'?'hot':''}">${esc(stoneLabel(s))}</span>`).join('')}</div><span class="memo">성별 없는 스톤 옵션 — 해당 반지 한 곳에 적으면 됩니다</span></div></div>`);
+        tlines.push('  공용 스톤: '+shared.map(stoneLabel).join(', '));
+      }
+      if(!p0.guard&&d.guard) lines.push(`<div class="memo">기본 쌍지 상품 — 가드링 옵션이 없으니 쌍지 그대로</div>`);
+      if(p0.inlay&&!silver&&!d.inlay) lines.push(`<div class="memo">* 안쪽막음: 제조번호가 기본안막인 제품이면 생략해도 됩니다</div>`);
+      parts.push(`<div class="phead"><span class="prod">${esc(prod)}</span>${p0.material?' · '+esc(p0.material):''}${flags.length?` <span class="memo">(${esc(flags.join(', '))})</span>`:''}</div>${lines.join('')}`);
+      texts.push(`- ${prod}${p0.material?' · '+p0.material:''}${flags.length?' ('+flags.join(', ')+')':''}`,...tlines);
+    });
+    cu.items.filter(i=>i.skip).forEach(i=>{ parts.push(`<div class="memo">비교 제외: ${esc(i.prod)} (${esc(i.reason)})</div>`); texts.push(`- (비교 제외) ${i.prod}`); });
+    if(cu.unknownOpts.length){ const u=cu.unknownOpts.map(o=>o.k+' : '+o.v).join(' / '); parts.push(`<div class="alert">⚠ 검수기가 검사하지 않는 옵션: ${esc(u)} — 직접 확인하세요</div>`); texts.push('  ⚠ 미검사 옵션: '+u); }
+    if(msgs.length){ parts.push(`<div class="memo">배송메세지: ${esc(msgs.join(' / '))}</div>`); texts.push('  배송메세지: '+msgs.join(' / ')); }
+    return {name:cu.name,html:parts.join(''),text:texts.join('\n')};
+  }
+  let cardTexts=[];
+  function renderCards(){
+    const emp=empData(), panel=$('cardsPanel');
+    if(!emp){ panel.hidden=true; return; }
+    const {cust}=buildExpected(emp);
+    cardDone.clear(); try{ JSON.parse(localStorage.getItem(cardStoreKey())||'[]').forEach(x=>cardDone.add(x)); }catch(e){}
+    const cards=[...cust.values()].map(cu=>cardFor(cu,emp));
+    cardTexts=cards.map(c=>c.text);
+    $('cardsCount').textContent=`${cards.length}명 · 입력함 ${cards.filter(c=>cardDone.has(c.name)).length}명`;
+    $('cardList').innerHTML=cards.map(c=>`<div class="card${cardDone.has(c.name)?' doneCard':''}"><div class="top"><span class="nm">${esc(c.name)}</span><label class="ackbox" style="margin:0"><input type="checkbox" data-card="${esc(c.name)}" ${cardDone.has(c.name)?'checked':''}> 입력함</label></div>${c.html}</div>`).join('');
+    panel.hidden=false;
+  }
+  $('cardList').addEventListener('change',e=>{
+    const cb=e.target.closest('[data-card]'); if(!cb) return;
+    if(cb.checked) cardDone.add(cb.dataset.card); else cardDone.delete(cb.dataset.card);
+    try{ localStorage.setItem(cardStoreKey(),JSON.stringify([...cardDone])); }catch(x){}
+    renderCards();
+  });
+  $('btnCopyCards').addEventListener('click',()=>{ navigator.clipboard.writeText(cardTexts.join('\n\n')).then(()=>{const b=$('btnCopyCards');b.textContent='복사됨';setTimeout(()=>b.textContent='카드 전체 복사',1500);}).catch(()=>{}); });
+
+  // ---------- 검수 완료: 남은 검토가 0건일 때만 완료할 수 있고, 이름·시각이 기록에 남는다
+  try{ $('optReviewer').value=localStorage.getItem('gp-reviewer')||''; }catch(e){}
+  $('optReviewer').addEventListener('input',()=>{ try{ localStorage.setItem('gp-reviewer',$('optReviewer').value.trim()); }catch(e){} });
+  function pendingCount(){ const R=state.result; if(!R) return 0; return R.out.filter(x=>(x.st==='err'||x.st==='warn'||x.st==='miss'||x.st==='extra')&&!state.ack.has(x.key)).length; }
+  function renderFinish(){
+    const bar=$('finishBar'), btn=$('btnFinish'), note=$('finishNote');
+    if(!state.result){ bar.hidden=true; return; }
+    bar.hidden=false;
+    const pend=pendingCount();
+    if(pend>0&&state.done) state.done=null;   // 확인을 풀면 완료도 풀린다
+    bar.classList.toggle('done',!!state.done);
+    if(state.done){ note.innerHTML=`✓ <b>검수 완료</b> — ${esc(state.done.by)} · ${esc(fmtWhen(state.done.at))}. 이제 골드펜 단계를 넘겨도 됩니다.`; btn.textContent='완료 취소'; btn.disabled=false; btn.classList.remove('primary'); }
+    else if(pend>0){ note.textContent=`남은 검토 ${pend}건을 모두 확인해야 검수를 완료할 수 있습니다. 완료 전에는 골드펜 단계를 넘기지 마세요.`; btn.textContent='검수 완료'; btn.disabled=true; btn.classList.add('primary'); }
+    else { note.textContent='모든 항목을 확인했습니다. 검수 완료를 눌러 마무리하세요 — 기록에 이름과 시각이 남습니다.'; btn.textContent='검수 완료'; btn.disabled=false; btn.classList.add('primary'); }
+  }
+  $('btnFinish').addEventListener('click',()=>{
+    if(state.done){ state.done=null; render(); saveAck(); return; }
+    const by=$('optReviewer').value.trim();
+    if(!by){ $('optReviewer').focus(); setMsg('검수자 이름을 적은 뒤 검수 완료를 눌러주세요.'); return; }
+    setMsg(''); state.done={at:new Date().toISOString(),by}; render(); saveAck();
+  });
+
   // ---------- vocab panel wiring
   $('btnVocabSave').addEventListener('click',async()=>{
     vocabFromForm(); await vocabSave();
     const s=$('vocabSaved'); s.hidden=false; setTimeout(()=>s.hidden=true,1600);
-    compare();
+    compare(); renderCards();
   });
   $('btnVocabReset').addEventListener('click',async()=>{
     const b=$('btnVocabReset'); if(!arm('vocab',b,'다시 누르면 초기화')) return;
     armed=null; b.textContent='기본값으로 되돌리기';
-    VOCAB=JSON.parse(JSON.stringify(VOCAB_DEFAULT)); vocabToForm(); await vocabSave(); compare();
+    VOCAB=JSON.parse(JSON.stringify(VOCAB_DEFAULT)); vocabToForm(); await vocabSave(); compare(); renderCards();
   });
 
   // ---------- wiring
@@ -942,8 +1194,10 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       state[side]=data; state['file'+side]=file.name;
       $('file'+side).innerHTML=`<b>${esc(file.name)}</b> · ${data.kind==='emp'?'발주서 형식':'골드펜 형식'} · ${data.rows.length}행`;
       $('hint'+side).hidden=true;$('drop'+side).classList.add('loaded');setMsg('');
+      renderCards();
       if(state.A&&state.B) compare({log:true,fresh:true});
-      else{$('verdict').className='verdict idle';$('verdict').textContent=side==='A'?'골드펜 주문리스트 파일을 올려주세요.':'발주서 파일을 올려주세요.';}
+      else{ if(empData()) $('cardsPanel').open=true;
+        $('verdict').className='verdict idle';$('verdict').textContent= empData()?'입력 카드를 보며 골드펜에 입력한 뒤, 주문리스트를 내려받아 올려주세요.':(side==='A'?'골드펜 주문리스트 파일을 올려주세요.':'발주서 파일을 올려주세요.');}
     }catch(e){setMsg(`${file.name}: ${e.message||e}`);}
   }
   ['A','B'].forEach(side=>{
@@ -964,7 +1218,8 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   });
   $('btnClearFilter').addEventListener('click',()=>{state.filter=null;render();});
   $('btnReset').addEventListener('click',()=>{
-    state.A=state.B=state.result=null; state.filter=null; state.fileA=state.fileB=''; state.loggedSig=''; state.logId=null; state.ack=new Set();
+    state.A=state.B=state.result=null; state.filter=null; state.fileA=state.fileB=''; state.loggedSig=''; state.logId=null; state.logTs=null; state.done=null; state.ack=new Set();
+    $('cardsPanel').hidden=true; $('finishBar').hidden=true;
     document.querySelectorAll('.tile').forEach(t=>t.classList.remove('active')); $('filterbar').hidden=true;
     ['A','B'].forEach(s=>{$('in'+s).value='';$('file'+s).textContent='';$('hint'+s).hidden=false;$('drop'+s).classList.remove('loaded');});
     $('tiles').hidden=true;$('results').hidden=true;$('btnCopy').hidden=true;setMsg('');
