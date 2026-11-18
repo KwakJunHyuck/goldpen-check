@@ -193,20 +193,25 @@
   .card .todo span.hot{background:var(--warn-soft);color:var(--warn);font-weight:700}
   .card .alert{font-size:12px;color:var(--warn);font-weight:500}
   .card .memo{font-size:12px;color:var(--ink-3)}
+  details.guide{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:10px;padding:10px 16px}
+  details.guide summary{cursor:pointer;font-weight:700;color:var(--accent)}
+  .guide ol{margin:10px 0 4px;padding-left:22px;display:flex;flex-direction:column;gap:6px;color:var(--ink);font-size:13.5px}
+  .guide .tip{margin:8px 0 2px;color:var(--ink-2);font-size:12.5px}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <div class="wrap">
   <header>
     <h1>골드펜 입력 검수</h1>
-    <span class="ver">v2.1 · 2026-11-18</span>
+    <span class="ver">v2.2 · 2026-11-18</span>
     <p>플레이오토 발주서와 골드펜 주문리스트를 고객별로 대조해 사이즈·재질·색상·스톤·안쪽막음·가드링 입력 실수를 찾고, 입력 전에 볼 고객별 카드를 만들어 줍니다. 파일은 이 브라우저 안에서만 처리됩니다.</p>
   </header>
 
   <details class="changelog">
-    <summary>변경 내역 — 최종 수정 2026-11-18 (v2.1)</summary>
+    <summary>변경 내역 — 최종 수정 2026-11-18 (v2.2)</summary>
     <ul>
-      <li class="now"><span class="v">v2.1<span class="d">2026-11-18</span></span><span><b>입력 카드</b> — 발주서만 올려도 고객별로 흩어진 행을 한 장으로 합쳐, 기타설명에 꼭 적어야 할 것(가드링x·안쪽막음·스톤 등)을 칩으로 보여줍니다. <b>미검사 옵션</b> — 발주서에 검수기가 모르는 옵션이 있으면 조용히 넘기지 않고 확인으로 올립니다. <b>상품별 기본값</b> — "테트라 = 쌍지"처럼 상품마다 기본 쌍지·기본 안막을 기억합니다. <b>검수 완료</b> — 남은 검토가 0건일 때만 검수자 이름으로 완료할 수 있고 기록에 남습니다.</span></li>
+      <li class="now"><span class="v">v2.2<span class="d">2026-11-18</span></span><span>상단에 다섯 단계 <b>사용법</b>을 넣었습니다.</span></li>
+      <li><span class="v">v2.1<span class="d">2026-11-18</span></span><span><b>입력 카드</b> — 발주서만 올려도 고객별로 흩어진 행을 한 장으로 합쳐, 기타설명에 꼭 적어야 할 것(가드링x·안쪽막음·스톤 등)을 칩으로 보여줍니다. <b>미검사 옵션</b> — 발주서에 검수기가 모르는 옵션이 있으면 조용히 넘기지 않고 확인으로 올립니다. <b>상품별 기본값</b> — "테트라 = 쌍지"처럼 상품마다 기본 쌍지·기본 안막을 기억합니다. <b>검수 완료</b> — 남은 검토가 0건일 때만 검수자 이름으로 완료할 수 있고 기록에 남습니다.</span></li>
       <li><span class="v">v2.0<span class="d">2026-11-18</span></span><span><b>가드링(쌍지)</b>을 검사합니다. 발주서 "가드링 선택 : 선택 없음"인데 골드펜에 쌍지가 있으면 불일치, "메인링만·가드링x" 표기가 없으면 확인으로 올립니다. 그동안 "쌍지"를 무시할 메모로 분류해 놓쳤던 문제를 고쳤습니다.</span></li>
       <li><span class="v">v1.9<span class="d">2026-10-26</span></span><span><b>실버(SV925·SILVER) 제품은 기본이 안쪽막음</b>이라, 발주서에 안쪽막음 주문이 없어도 골드펜에 판메움·초메움 표기가 있는 것을 정상으로 봅니다. 기본 안막 판단에 재질과 상품명도 함께 봅니다.</span></li>
       <li><span class="v">v1.8<span class="d">2026-10-23</span></span><span>단독 html 파일(깃허브 등)로 열면 비교 전에도 요약 타일이 보이던 문제를 고쳤습니다.</span></li>
@@ -219,6 +224,18 @@
       <li><span class="v">v1.1<span class="d">2026-09-18</span></span><span>플레이오토 발주서 형식에 맞춰 고객별로 남/여 조각을 짝지어 비교합니다.</span></li>
       <li><span class="v">v1.0<span class="d">2026-09-18</span></span><span>첫 버전 — 접수번호 기준으로 두 파일을 셀 단위 비교.</span></li>
     </ul>
+  </details>
+
+  <details class="guide" id="guide">
+    <summary>사용법 — 처음이면 열어보세요</summary>
+    <ol>
+      <li><b>발주서 올리기</b> — 플레이오토에서 발주서(EMP) 엑셀을 내려받아 <b>왼쪽 칸</b>에 끌어다 놓습니다.</li>
+      <li><b>입력 카드 보며 입력</b> — 고객별 카드를 보고 골드펜에 입력합니다. 카드의 칩은 기타설명에 적을 것이고, <b>주황색 칩은 꼭</b> 적어야 합니다. 다 넣은 고객은 "입력함"에 체크합니다.</li>
+      <li><b>주문리스트 올리기</b> — 입력을 마치면 골드펜 주문리스트 엑셀을 내려받아 <b>오른쪽 칸</b>에 놓습니다. 바로 비교됩니다.</li>
+      <li><b>고치기</b> — <b>빨강(불일치·누락)</b>과 <b>파랑(추가)</b>은 골드펜에서 고칩니다. <b>주황(확인)</b>은 직접 보고 맞으면 "확인했음"에 체크합니다. 고친 뒤 주문리스트를 다시 내려받아 올리면 다시 검사합니다.</li>
+      <li><b>검수 완료</b> — 남은 검토가 0건이 되면 검수자 이름을 적고 <b>검수 완료</b>를 누릅니다. <b>완료 전에는 골드펜 단계를 넘기지 않습니다.</b></li>
+    </ol>
+    <p class="tip">처음 보는 말이나 옵션이 "해석 못함·미검사 옵션"으로 뜨면, 신경 쓸 필요 없는 것일 때만 옆의 등록 버튼을 누르세요. 작업 내용이면 곽준혁에게 알려주세요. 상품마다 기본 쌍지·기본 안막은 아래 "용어 설정 → 상품별 기본값"에 한 줄씩 적어둡니다.</p>
   </details>
 
   <div class="drops">
